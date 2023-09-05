@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Shebang line indicates the interpreter to be used (in this case,shell)
+# Shebang line indicates the interpreter to be used (in this case,shell).
 
 # Assign provided args to variables
 filesdir=$1

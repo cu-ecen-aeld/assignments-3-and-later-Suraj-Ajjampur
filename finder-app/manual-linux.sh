@@ -44,7 +44,7 @@ if [ ! -e ${OUTDIR}/linux-stable/arch/${ARCH}/boot/Image ]; then
     # Build any kernel modules
     make ARCH=arm64 CROSS_COMPILE=${CROSS_COMPILE} modules
     # Build the devicetree
-     make ARCH=arm64 CROSS_COMPILE=${CROSS_COMPILE} dtbs
+    make ARCH=arm64 CROSS_COMPILE=${CROSS_COMPILE} dtbs
 
 fi
 
@@ -95,7 +95,7 @@ sudo cp ${ROOT}/lib64/libm.so.* ${OUTDIR}/rootfs/lib64
 sudo cp ${ROOT}/lib64/libresolv.so.* ${OUTDIR}/rootfs/lib64
 # TODO: Make device nodes
 sudo mknod -m 666 ${OUTDIR}/rootfs/dev/null c 1 3
-sudo mknod -m 600 ${OUTDIR}/rootfs/dev/console c 5 1
+sudo mknod -m 666 ${OUTDIR}/rootfs/dev/console c 5 1
 # TODO: Clean and build the writer utility
 cd ${FINDER_APP_DIR}
 make clean
@@ -104,15 +104,11 @@ make CROSS_COMPILE=${CROSS_COMPILE}
 # on the target rootfs
 SRC="/home/vboxuser/AESD/assignment-1-Suraj-Ajjampur/finder-app"
 DST="${OUTDIR}/rootfs/home/finder-app"
-
-# Move all .sh files
-find "$SRC" -maxdepth 1 -type f -name "*.sh" -exec sudo cp {} "$DST" \;
-
-# Move all executable files
-find "$SRC" -maxdepth 1 -type f -executable -exec sudo cp {} "$DST" \;
-
-cd "$FINDER_APP_DIR"
-cp -r conf/ ${DST}
+cp writer ${OUTDIR}/rootfs/home
+cp finder.sh ${OUTDIR}/rootfs/home
+cp finder-test.sh ${OUTDIR}/rootfs/home
+cp -r conf/ ${OUTDIR}/rootfs/home
+cp autorun-qemu.sh ${OUTDIR}/rootfs/home
 
 # TODO: Chown the root directory
 cd ${OUTDIR}/rootfs/

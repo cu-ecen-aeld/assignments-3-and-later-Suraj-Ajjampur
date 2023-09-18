@@ -12,7 +12,6 @@ BUSYBOX_VERSION=1_33_1
 FINDER_APP_DIR=$(realpath $(dirname $0))
 ARCH=arm64
 CROSS_COMPILE=aarch64-none-linux-gnu-
-LIBC=/home/vboxuser/AESD/cross-compile/gcc-arm-10.3-2021.07-x86_64-aarch64-none-linux-gnu/aarch64-none-linux-gnu/libc
 
 if [ $# -lt 1 ]
 then
@@ -50,8 +49,9 @@ if [ ! -e ${OUTDIR}/linux-stable/arch/${ARCH}/boot/Image ]; then
 fi
 
 echo "Adding the Image in outdir"
-cp ${OUTDIR}/linux-stable/arch/${ARCH}/boot/Image ${OUTDIR}
+cp -r ${OUTDIR}/linux-stable/arch/${ARCH}/boot/Image ${OUTDIR}
 echo "Creating the staging directory for the root filesystem"
+
 cd "$OUTDIR"
 if [ -d "${OUTDIR}/rootfs" ]
 then
@@ -60,11 +60,12 @@ then
 fi
 
 # TODO: Create necessary base directories
-mkdir -p rootfs
-cd rootfs
+mkdir ${OUTDIR}/rootfs
+cd ${OUTDIR}/rootfs
 mkdir -p bin dev etc home lib lib64 proc sbin sys tmp usr var
 mkdir -p usr/bin usr/lib usr/sbin
 mkdir -p var/log
+mkdir -p home/finder-app
 
 cd "$OUTDIR"
 if [ ! -d "${OUTDIR}/busybox" ]
@@ -87,27 +88,31 @@ ${CROSS_COMPILE}readelf -a ${OUTDIR}/rootfs/bin/busybox | grep "program interpre
 ${CROSS_COMPILE}readelf -a ${OUTDIR}/rootfs/bin/busybox | grep "Shared library"
 
 # TODO: Add library dependencies to rootfs
-sudo ln -s ${LIBC}/lib/ld-linux-aarch64.so.1 ${OUTDIR}/rootfs/lib
-sudo ln -s ${LIBC}/lib64/libc.so.6 ${OUTDIR}/rootfs/lib64
-sudo ln -s ${LIBC}/lib64/libm.so.6 ${OUTDIR}/rootfs/lib64
-sudo ln -s ${LIBC}/lib64/libresolv.so.2 ${OUTDIR}/rootfs/lib64
+ROOT=$(${CROSS_COMPILE}gcc --print-sysroot)
+sudo cp ${ROOT}/lib/ld-linux-aarch64.so.* ${OUTDIR}/rootfs/lib
+sudo cp ${ROOT}/lib64/libc.so.* ${OUTDIR}/rootfs/lib64
+sudo cp ${ROOT}/lib64/libm.so.* ${OUTDIR}/rootfs/lib64
+sudo cp ${ROOT}/lib64/libresolv.so.* ${OUTDIR}/rootfs/lib64
 # TODO: Make device nodes
 sudo mknod -m 666 ${OUTDIR}/rootfs/dev/null c 1 3
 sudo mknod -m 600 ${OUTDIR}/rootfs/dev/console c 5 1
 # TODO: Clean and build the writer utility
+cd ${FINDER_APP_DIR}
 make clean
-
 make CROSS_COMPILE=${CROSS_COMPILE}
 # TODO: Copy the finder related scripts and executables to the /home directory
 # on the target rootfs
 SRC="/home/vboxuser/AESD/assignment-1-Suraj-Ajjampur/finder-app"
-DST="${OUTDIR}/rootfs/home"
+DST="${OUTDIR}/rootfs/home/finder-app"
 
 # Move all .sh files
-find "$SRC" -maxdepth 1 -type f -name "*.sh" -exec cp {} "$DST" \;
+find "$SRC" -maxdepth 1 -type f -name "*.sh" -exec sudo cp {} "$DST" \;
 
 # Move all executable files
-find "$SRC" -maxdepth 1 -type f -executable -exec cp {} "$DST" \;
+find "$SRC" -maxdepth 1 -type f -executable -exec sudo cp {} "$DST" \;
+
+cd "$FINDER_APP_DIR"
+cp -r conf/ ${DST}
 
 # TODO: Chown the root directory
 cd ${OUTDIR}/rootfs/

@@ -2,9 +2,11 @@
 # Script outline to install and build kernel.
 # Author: Siddhant Jajoo.
 
-set -e
-set -u
 
+set -e # Causes script to exit immediately if any command it runs exits with non-zero exit status
+set -u # Causes script to treat uninitialized variables as an error and exit immediately
+
+# Variables Initialization
 OUTDIR=/tmp/aeld
 KERNEL_REPO=git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
 KERNEL_VERSION=v5.1.10
@@ -74,8 +76,8 @@ git clone git://busybox.net/busybox.git
     cd busybox
     git checkout ${BUSYBOX_VERSION}
     # TODO:  Configure busybox
-    make distclean
-    make defconfig
+    make distclean # Clean the build environment from compiled object files, binary executables and configuration files
+    make defconfig # Creates a default config file for building the software
 else
     cd busybox
 fi
@@ -84,6 +86,8 @@ fi
 make ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE}
 make CONFIG_PREFIX=${OUTDIR}/rootfs/ ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} install
 echo "Library dependencies"
+
+# Added needed shared libraries from toolchain sysroot
 ${CROSS_COMPILE}readelf -a ${OUTDIR}/rootfs/bin/busybox | grep "program interpreter"
 ${CROSS_COMPILE}readelf -a ${OUTDIR}/rootfs/bin/busybox | grep "Shared library"
 
@@ -94,6 +98,7 @@ sudo cp ${ROOT}/lib64/libc.so.* ${OUTDIR}/rootfs/lib64
 sudo cp ${ROOT}/lib64/libm.so.* ${OUTDIR}/rootfs/lib64
 sudo cp ${ROOT}/lib64/libresolv.so.* ${OUTDIR}/rootfs/lib64
 # TODO: Make device nodes
+# Created character device nodes modified permissions to 666 and major and minur numbers
 sudo mknod -m 666 ${OUTDIR}/rootfs/dev/null c 1 3
 sudo mknod -m 666 ${OUTDIR}/rootfs/dev/console c 5 1
 # TODO: Clean and build the writer utility
@@ -102,8 +107,6 @@ make clean
 make CROSS_COMPILE=${CROSS_COMPILE}
 # TODO: Copy the finder related scripts and executables to the /home directory
 # on the target rootfs
-SRC="/home/vboxuser/AESD/assignment-1-Suraj-Ajjampur/finder-app"
-DST="${OUTDIR}/rootfs/home/finder-app"
 cp writer ${OUTDIR}/rootfs/home
 cp finder.sh ${OUTDIR}/rootfs/home
 cp finder-test.sh ${OUTDIR}/rootfs/home
@@ -112,9 +115,12 @@ cp autorun-qemu.sh ${OUTDIR}/rootfs/home
 
 # TODO: Chown the root directory
 cd ${OUTDIR}/rootfs/
+# Make the contents owned by root
 sudo chown -R root:root *
 # TODO: Create initramfs.cpio.gz
+# cpio -H newc -ov --owner root:root: The cpio utility reads the file list from standard input and creates an archive in the "newc" format. 
+# The -o option is for creating the archive, -v is for verbose mode, 
+# and --owner root:root sets the owner of all the files in the archive to root.
 find . | cpio -H newc -ov --owner root:root > ${OUTDIR}/initramfs.cpio
-
 cd ..
 gzip -f initramfs.cpio

@@ -15,8 +15,6 @@
  *   value was returned by the command issued in @param cmd.
 */
 
-#define MAX_OUTPUT_SIZE 1024
-
 bool do_system(const char *cmd) {
     // Create a pipe to capture the command's output
     int status = system(cmd);
@@ -26,7 +24,7 @@ bool do_system(const char *cmd) {
 	  return false;
     }
 	
-    //What is this???
+    // WIFEXITED is a macro used to check if the child process (created for executing the command) has exited normally.
     if(!WIFEXITED(status)){
 	    return false;
     }
@@ -64,11 +62,7 @@ bool do_exec(int count, ...)
     }
     //Sets the last element of array to NULL to terminal the argument list
     command[count] = NULL;
-    // this line is to avoid a compile warning before your implementation is complete
-    // and may be removed
-   // command[count] = command[count];
 
- 
 	/*
 	 * TODO:
 	 *   Execute a system command by calling fork, execv(),
@@ -98,12 +92,12 @@ bool do_exec(int count, ...)
         closelog();
 
     // This if statement  was fully generated using ChatGPT at https://chat.openai.com/ with prompts including
-   /* can we do this?
-   int exec_status =  execv(command[0],command);
-   if(exec_status == -1){
-           return false;
-   }
-   */
+    /* can we do this?
+    int exec_status =  execv(command[0],command);
+    if(exec_status == -1){
+            return false;
+    }
+    */
 
     	// Execute the command in the child process
     	if (execv(command[0], command) == -1) {

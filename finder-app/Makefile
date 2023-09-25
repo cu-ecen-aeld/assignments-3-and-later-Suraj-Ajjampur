@@ -1,4 +1,4 @@
-COMPILER ?= $(CROSS_COMPILER)gcc
+COMPILER=$(CROSS_COMPILE)gcc
 
 #Flags to treat all the warnings as errors
 FLAGS=-Wall -Werror

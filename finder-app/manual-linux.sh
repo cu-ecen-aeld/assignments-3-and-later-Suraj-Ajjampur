@@ -38,15 +38,15 @@ if [ ! -e ${OUTDIR}/linux-stable/arch/${ARCH}/boot/Image ]; then
 
     # TODO: Add your kernel build steps here
     # “deep clean” the kernel build tree - removing the .config file with any existing configurations
-    make ARCH=arm64 CROSS_COMPILE=${CROSS_COMPILE} mrproper
+    make ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} mrproper
     #Configure for our “virt” arm dev board we will simulate in QEMU
-    make ARCH=arm64 CROSS_COMPILE=${CROSS_COMPILE} defconfig
+    make ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} defconfig
     # Build a kernel image for booting with QEMU
-    make -j4 ARCH=arm64 CROSS_COMPILE=${CROSS_COMPILE} all
+    make -j4 ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} all
     # Build any kernel modules
-    make ARCH=arm64 CROSS_COMPILE=${CROSS_COMPILE} modules
+    make ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} modules
     # Build the devicetree
-    make ARCH=arm64 CROSS_COMPILE=${CROSS_COMPILE} dtbs
+    make ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} dtbs
 
 fi
 
@@ -67,7 +67,7 @@ cd ${OUTDIR}/rootfs
 mkdir -p bin dev etc home lib lib64 proc sbin sys tmp usr var
 mkdir -p usr/bin usr/lib usr/sbin
 mkdir -p var/log
-mkdir -p home/finder-app
+#mkdir -p home/finder-app
 
 cd "$OUTDIR"
 if [ ! -d "${OUTDIR}/busybox" ]
@@ -84,7 +84,7 @@ fi
 
 # TODO: Make and install busybox
 make ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE}
-make CONFIG_PREFIX=${OUTDIR}/rootfs/ ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} install
+make CONFIG_PREFIX=${OUTDIR}/rootfs ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} install
 echo "Library dependencies"
 
 # Added needed shared libraries from toolchain sysroot

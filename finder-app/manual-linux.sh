@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # Script outline to install and build kernel.
 # Author: Siddhant Jajoo.
 
@@ -67,7 +67,6 @@ cd ${OUTDIR}/rootfs
 mkdir -p bin dev etc home lib lib64 proc sbin sys tmp usr var
 mkdir -p usr/bin usr/lib usr/sbin
 mkdir -p var/log
-#mkdir -p home/finder-app
 
 cd "$OUTDIR"
 if [ ! -d "${OUTDIR}/busybox" ]

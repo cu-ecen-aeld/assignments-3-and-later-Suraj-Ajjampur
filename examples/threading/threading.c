@@ -95,6 +95,11 @@ bool start_thread_obtaining_mutex(pthread_t* thread, pthread_mutex_t* mutex, int
 
     // Allocate memory for thread_data structure and initialize its members.
     struct thread_data* thread_func_args = (struct thread_data*)malloc(sizeof(struct thread_data));
+    if (!thread_func_args){
+        syslog(LOG_ERR, "Malloc could not allocate memory");
+        exit(1);
+    }
+    
     thread_func_args->mutex = mutex;
     thread_func_args->wait_to_obtain_ms = wait_to_obtain_ms;
     thread_func_args->wait_to_release_ms = wait_to_release_ms;

@@ -15,6 +15,20 @@
 #include <unistd.h>
 #include <string.h>
 
+//Replacing symbolic permission constants with their octal representations directly.
+#ifndef S_IRWXU
+#define S_IRWXU 0700
+#endif
+
+#ifndef S_IRWXG
+#define S_IRWXG 0070
+#endif
+
+#ifndef S_IRWXO
+#define S_IRWXO 0007
+#endif
+
+
 /***************************************** Main Function *******************************************************/
 int main(int argc, char* argv[]){						/*argc is the number of arguments and argv are the argument strings */
   if (argc!=3){                                                                  /* Checking for valid no. of args */

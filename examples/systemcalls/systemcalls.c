@@ -14,6 +14,7 @@
  *   either in invocation of the system() call, or if a non-zero return
  *   value was returned by the command issued in @param cmd.
 */
+
 bool do_system(const char *cmd) {
     // Create a pipe to capture the command's output
     int status = system(cmd);
@@ -149,7 +150,6 @@ bool do_exec_redirect(const char *outputfile, int count, ...)
  *   The rest of the behaviour is same as do_exec()
  *
 */
-
 
     // Create a file descriptor for the output file
     int output_fd = open(outputfile, O_WRONLY | O_CREAT | O_TRUNC, 0666);

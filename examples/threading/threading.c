@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <syslog.h>
 #include <string.h>
+#include <errno.h>
 
 // Optional: use these functions to add debug or error prints to your application
 #define DEBUG_LOG(msg,...)
@@ -23,30 +24,45 @@
 void* threadfunc(void* thread_param)
 {
     // Cast the thread_param pointer to a struct thread_data pointer to access its members.
+    // struct thread_data* data = (struct thread_data*)thread_param;
     unsigned int time_to_sleep = ((struct thread_data*)thread_param)->wait_to_obtain_ms;
     unsigned int time_to_hold = ((struct thread_data*)thread_param)->wait_to_release_ms;
     pthread_mutex_t* mutex = ((struct thread_data*)thread_param)->mutex;
 
     // Sleep for the specified time before attempting to obtain the mutex.
-    usleep(time_to_sleep * 1000);
+    if (usleep(time_to_sleep * 1000) == -1)
+    {
+        syslog(LOG_ERR, "usleep() failed: %s", strerror(errno));
+        ((struct thread_data*)thread_param)->thread_complete_success = false;
+        return thread_param;
+    }
 
     // Attempt to lock the mutex.
     int ret = pthread_mutex_lock(mutex);
     if (ret != 0)
     {
         syslog(LOG_ERR, "pthread_mutex_lock() failed: %d", ret);
-        return NULL;
+        ((struct thread_data*)thread_param)->thread_complete_success = false;
+        return thread_param;
     }
 
     // Sleep for the specified time while holding the mutex.
-    usleep(time_to_hold * 1000);
+    if (usleep(time_to_hold * 1000) == -1)
+    {
+        syslog(LOG_ERR, "usleep() failed: %s", strerror(errno));
+        // Unlock the mutex before returning to ensure it's not left locked.
+        pthread_mutex_unlock(mutex);
+        ((struct thread_data*)thread_param)->thread_complete_success = false;
+        return thread_param;
+    }
 
     // Release the mutex.
     ret = pthread_mutex_unlock(mutex);
     if (ret != 0)
     {
         syslog(LOG_ERR, "pthread_mutex_unlock() failed: %d", ret);
-        return NULL;
+        ((struct thread_data*)thread_param)->thread_complete_success = false;
+        return thread_param;
     }
 
     // Set thread_complete_success flag to true before exiting.

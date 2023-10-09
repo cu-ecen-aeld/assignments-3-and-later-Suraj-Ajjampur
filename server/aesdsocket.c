@@ -18,7 +18,6 @@
 
 #define DATA_FILE "/var/tmp/aesdsocketdata"
 
-
 /****************   Global Variables     ***************/ 
 sig_atomic_t fatal_error_in_progress = 0;
 

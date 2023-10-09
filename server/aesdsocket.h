@@ -1,3 +1,12 @@
+/****************************************************************
+ * @file      		aesdsocket.h
+*****************************************************************/
+
+//Include guard
+#ifndef AESDSOCKET_H
+#define AESDSOCKET_H
+
+/****************   Includes    ***************/ 
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -13,7 +22,8 @@
 #include <arpa/inet.h>
 #include <signal.h>
 
-// Optional: use these functions to add debug or error prints to your application
+/****************   Macros     ***************/ 
+
 #define DEBUG_LOG(msg,...) printf("INFO: " msg "\n" , ##__VA_ARGS__)
 
 #define ERROR_LOG(msg,...) printf("ERROR: " msg "\n" , ##__VA_ARGS__)
@@ -64,3 +74,5 @@ typedef struct
     bool daemon_mode;
     bool command_status_success;
 } status_flags;
+
+#endif // AESDSOCKET_H

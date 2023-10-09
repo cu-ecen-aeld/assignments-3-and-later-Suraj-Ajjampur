@@ -4,18 +4,18 @@
  * @brief		    Socket server application code
  *
  * @author    		Suraj Ajjampur, suraj.ajjampur@Colorado.edu
- * @date      		Oct 4, 2023
+ * @date      		Oct 8, 2023
  *
  *
- * @references
- * https://www.gnu.org/software/libc/manual/html_node/
- * Termination-in-Handler.html
+ * @reference
  *
  * https://www.thegeekstuff.com/2012/02/c-daemon-process/ 
  ************************************************************************/
 
+/****************   Includes    ***************/ 
 #include "aesdsocket.h"
 
+/****************   Macros     ***************/ 
 #define DATA_FILE "/var/tmp/aesdsocketdata"
 
 /****************   Global Variables     ***************/ 

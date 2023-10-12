@@ -427,6 +427,7 @@ int receive_and_store_data(void)
 {
     ssize_t bytes_received = 1;  // Number of bytes received (initialize to non-zero to start loop)
     char buf[BUF_LEN];  // Buffer to temporarily hold received data
+    memset(&buf, 0, sizeof(buf));
     int ret_status;  // Status returned by the write operation
 
     // Loop for receiving and storing data
@@ -444,8 +445,8 @@ int receive_and_store_data(void)
         }
 
         // Debugging Logs
-        DEBUG_LOG("Buffer : %ld", bytes_received);
-        DEBUG_LOG("Buffer : %s", buf);
+        //DEBUG_LOG("Buffer : %ld", bytes_received);
+        //DEBUG_LOG("Buffer : %s", buf);
 
         // Write the received data to the file
         ret_status = write(dataFileDescriptor, buf, bytes_received);
@@ -501,10 +502,6 @@ int send_file_content_to_client(void)
             s_flags.command_status_success = false;
             return -1;
         }
-
-        // Debugging information
-        DEBUG_LOG("Bytes read from file : %ld", read_count);
-        DEBUG_LOG("Content in read buffer : \n%s", file_buffer);
 
         // Transmit the read content to the client
         bytes_transmitted = send(clientSocketFd, file_buffer, read_count, 0);

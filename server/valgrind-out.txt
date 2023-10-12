@@ -1,219 +1,118 @@
-==5576== Memcheck, a memory error detector
-==5576== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==5576== Using Valgrind-3.15.0-608cb11914-20190413 and LibVEX; rerun with -h for copyright info
-==5576== Command: ./aesdsocket
-==5576== Parent PID: 5574
-==5576== 
---5576-- 
---5576-- Valgrind options:
---5576--    --error-exitcode=1
---5576--    --leak-check=full
---5576--    --show-leak-kinds=all
---5576--    --track-origins=yes
---5576--    --errors-for-leak-kinds=definite
---5576--    --verbose
---5576--    --log-file=valgrind-out.txt
---5576-- Contents of /proc/version:
---5576--   Linux version 5.15.0-86-generic (buildd@lcy02-amd64-062) (gcc (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0, GNU ld (GNU Binutils for Ubuntu) 2.34) #96~20.04.1-Ubuntu SMP Thu Sep 21 13:23:37 UTC 2023
---5576-- 
---5576-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-ssse3
---5576-- Page sizes: currently 4096, max supported 4096
---5576-- Valgrind library directory: /usr/lib/x86_64-linux-gnu/valgrind
---5576-- Reading syms from /home/vboxuser/AESD/assignment-1-Suraj-Ajjampur/server/aesdsocket
---5576-- Reading syms from /usr/lib/x86_64-linux-gnu/ld-2.31.so
---5576--   Considering /usr/lib/debug/.build-id/45/87364908de169dec62ffa538170118c1c3a078.debug ..
---5576--   .. build-id is valid
---5576-- Reading syms from /usr/lib/x86_64-linux-gnu/valgrind/memcheck-amd64-linux
---5576--    object doesn't have a symbol table
---5576--    object doesn't have a dynamic symbol table
---5576-- Scheduler: using generic scheduler lock implementation.
---5576-- Reading suppressions file: /usr/lib/x86_64-linux-gnu/valgrind/default.supp
-==5576== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-5576-by-vboxuser-on-???
-==5576== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-5576-by-vboxuser-on-???
-==5576== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-5576-by-vboxuser-on-???
-==5576== 
-==5576== TO CONTROL THIS PROCESS USING vgdb (which you probably
-==5576== don't want to do, unless you know exactly what you're doing,
-==5576== or are doing some strange experiment):
-==5576==   /usr/lib/x86_64-linux-gnu/valgrind/../../bin/vgdb --pid=5576 ...command...
-==5576== 
-==5576== TO DEBUG THIS PROCESS USING GDB: start GDB like this
-==5576==   /path/to/gdb ./aesdsocket
-==5576== and then give GDB the following command
-==5576==   target remote | /usr/lib/x86_64-linux-gnu/valgrind/../../bin/vgdb --pid=5576
-==5576== --pid is optional if only one valgrind process is running
-==5576== 
---5576-- REDIR: 0x4022e20 (ld-linux-x86-64.so.2:strlen) redirected to 0x580c9ce2 (???)
---5576-- REDIR: 0x4022bf0 (ld-linux-x86-64.so.2:index) redirected to 0x580c9cfc (???)
---5576-- Reading syms from /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_core-amd64-linux.so
---5576--    object doesn't have a symbol table
---5576-- Reading syms from /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so
---5576--    object doesn't have a symbol table
-==5576== WARNING: new redirection conflicts with existing -- ignoring it
---5576--     old: 0x04022e20 (strlen              ) R-> (0000.0) 0x580c9ce2 ???
---5576--     new: 0x04022e20 (strlen              ) R-> (2007.0) 0x0483f060 strlen
---5576-- REDIR: 0x401f600 (ld-linux-x86-64.so.2:strcmp) redirected to 0x483ffd0 (strcmp)
---5576-- REDIR: 0x4023380 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x4843a20 (mempcpy)
---5576-- Reading syms from /usr/lib/x86_64-linux-gnu/libc-2.31.so
---5576--   Considering /usr/lib/debug/.build-id/18/78e6b475720c7c51969e69ab2d276fae6d1dee.debug ..
---5576--   .. build-id is valid
---5576-- REDIR: 0x48fc480 (libc.so.6:memmove) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
---5576-- REDIR: 0x48fb780 (libc.so.6:strncpy) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
---5576-- REDIR: 0x48fc7b0 (libc.so.6:strcasecmp) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
---5576-- REDIR: 0x48fb0a0 (libc.so.6:strcat) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
---5576-- REDIR: 0x48fb7e0 (libc.so.6:rindex) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
---5576-- REDIR: 0x48fdc50 (libc.so.6:rawmemchr) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
---5576-- REDIR: 0x4918ce0 (libc.so.6:wmemchr) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
---5576-- REDIR: 0x4918820 (libc.so.6:wcscmp) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
---5576-- REDIR: 0x48fc5e0 (libc.so.6:mempcpy) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
---5576-- REDIR: 0x48fc410 (libc.so.6:bcmp) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
---5576-- REDIR: 0x48fb710 (libc.so.6:strncmp) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
---5576-- REDIR: 0x48fb150 (libc.so.6:strcmp) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
---5576-- REDIR: 0x48fc540 (libc.so.6:memset) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
---5576-- REDIR: 0x49187e0 (libc.so.6:wcschr) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
---5576-- REDIR: 0x48fb670 (libc.so.6:strnlen) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
---5576-- REDIR: 0x48fb230 (libc.so.6:strcspn) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
---5576-- REDIR: 0x48fc800 (libc.so.6:strncasecmp) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
---5576-- REDIR: 0x48fb1d0 (libc.so.6:strcpy) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
---5576-- REDIR: 0x48fc950 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
---5576-- REDIR: 0x4919f50 (libc.so.6:wcsnlen) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
---5576-- REDIR: 0x4918860 (libc.so.6:wcscpy) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
---5576-- REDIR: 0x48fb820 (libc.so.6:strpbrk) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
---5576-- REDIR: 0x48fb100 (libc.so.6:index) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
---5576-- REDIR: 0x48fb630 (libc.so.6:strlen) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
---5576-- REDIR: 0x4904bb0 (libc.so.6:memrchr) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
---5576-- REDIR: 0x48fc850 (libc.so.6:strcasecmp_l) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
---5576-- REDIR: 0x48fc3d0 (libc.so.6:memchr) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
---5576-- REDIR: 0x4918930 (libc.so.6:wcslen) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
---5576-- REDIR: 0x48fbae0 (libc.so.6:strspn) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
---5576-- REDIR: 0x48fc750 (libc.so.6:stpncpy) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
---5576-- REDIR: 0x48fc6f0 (libc.so.6:stpcpy) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
---5576-- REDIR: 0x48fdc90 (libc.so.6:strchrnul) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
---5576-- REDIR: 0x48fc8a0 (libc.so.6:strncasecmp_l) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
---5576-- REDIR: 0x490d8c0 (libc.so.6:__strrchr_sse2) redirected to 0x483ea70 (__strrchr_sse2)
---5576-- REDIR: 0x490dbc0 (libc.so.6:__strlen_sse2) redirected to 0x483efa0 (__strlen_sse2)
---5576-- REDIR: 0x48f60e0 (libc.so.6:malloc) redirected to 0x483b780 (malloc)
---5576-- REDIR: 0x48f7b10 (libc.so.6:calloc) redirected to 0x483dce0 (calloc)
---5576-- REDIR: 0x490d6b0 (libc.so.6:__strchrnul_sse2) redirected to 0x4843540 (strchrnul)
---5576-- REDIR: 0x48f66d0 (libc.so.6:free) redirected to 0x483c9d0 (free)
---5576-- REDIR: 0x4917ad0 (libc.so.6:memcpy@GLIBC_2.2.5) redirected to 0x4840100 (memcpy@GLIBC_2.2.5)
---5576-- REDIR: 0x48fbfa0 (libc.so.6:__GI_strstr) redirected to 0x4843ca0 (__strstr_sse2)
---5576-- REDIR: 0x49e9550 (libc.so.6:__memcmp_sse4_1) redirected to 0x4842150 (__memcmp_sse4_1)
---5576-- REDIR: 0x49063b0 (libc.so.6:__strcmp_sse2_unaligned) redirected to 0x483fed0 (strcmp)
---5576-- REDIR: 0x4917f00 (libc.so.6:__memset_sse2_unaligned) redirected to 0x48428e0 (memset)
---5576-- REDIR: 0x4917ab0 (libc.so.6:__mempcpy_sse2_unaligned) redirected to 0x4843660 (mempcpy)
---5576-- REDIR: 0x48f6e80 (libc.so.6:realloc) redirected to 0x483df30 (realloc)
---5576-- REDIR: 0x4912b00 (libc.so.6:__strcpy_sse2_unaligned) redirected to 0x483f090 (strcpy)
-==5576== Conditional jump or move depends on uninitialised value(s)
-==5576==    at 0x483EFB8: __strlen_sse2 (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
-==5576==    by 0x48D4D14: __vfprintf_internal (vfprintf-internal.c:1688)
-==5576==    by 0x48BDD3E: printf (printf.c:33)
-==5576==    by 0x109ED8: send_file_content_to_client (in /home/vboxuser/AESD/assignment-1-Suraj-Ajjampur/server/aesdsocket)
-==5576==    by 0x109A53: main_socket_application (in /home/vboxuser/AESD/assignment-1-Suraj-Ajjampur/server/aesdsocket)
-==5576==    by 0x1096AD: main (in /home/vboxuser/AESD/assignment-1-Suraj-Ajjampur/server/aesdsocket)
-==5576==  Uninitialised value was created by a stack allocation
-==5576==    at 0x109DD0: send_file_content_to_client (in /home/vboxuser/AESD/assignment-1-Suraj-Ajjampur/server/aesdsocket)
-==5576== 
-==5576== Conditional jump or move depends on uninitialised value(s)
-==5576==    at 0x483EFB8: __strlen_sse2 (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
-==5576==    by 0x48D4D14: __vfprintf_internal (vfprintf-internal.c:1688)
-==5576==    by 0x48BDD3E: printf (printf.c:33)
-==5576==    by 0x109D29: receive_and_store_data (in /home/vboxuser/AESD/assignment-1-Suraj-Ajjampur/server/aesdsocket)
-==5576==    by 0x109A3D: main_socket_application (in /home/vboxuser/AESD/assignment-1-Suraj-Ajjampur/server/aesdsocket)
-==5576==    by 0x1096AD: main (in /home/vboxuser/AESD/assignment-1-Suraj-Ajjampur/server/aesdsocket)
-==5576==  Uninitialised value was created by a stack allocation
-==5576==    at 0x109C70: receive_and_store_data (in /home/vboxuser/AESD/assignment-1-Suraj-Ajjampur/server/aesdsocket)
-==5576== 
-==5576== Syscall param write(buf) points to uninitialised byte(s)
-==5576==    at 0x496A077: write (write.c:26)
-==5576==    by 0x48EAE8C: _IO_file_write@@GLIBC_2.2.5 (fileops.c:1181)
-==5576==    by 0x48EC950: new_do_write (fileops.c:449)
-==5576==    by 0x48EC950: _IO_new_do_write (fileops.c:426)
-==5576==    by 0x48EC950: _IO_do_write@@GLIBC_2.2.5 (fileops.c:423)
-==5576==    by 0x48EB6B4: _IO_new_file_xsputn (fileops.c:1244)
-==5576==    by 0x48EB6B4: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1197)
-==5576==    by 0x48D30FB: __vfprintf_internal (vfprintf-internal.c:1688)
-==5576==    by 0x48BDD3E: printf (printf.c:33)
-==5576==    by 0x109D29: receive_and_store_data (in /home/vboxuser/AESD/assignment-1-Suraj-Ajjampur/server/aesdsocket)
-==5576==    by 0x109A3D: main_socket_application (in /home/vboxuser/AESD/assignment-1-Suraj-Ajjampur/server/aesdsocket)
-==5576==    by 0x1096AD: main (in /home/vboxuser/AESD/assignment-1-Suraj-Ajjampur/server/aesdsocket)
-==5576==  Address 0x4a54e8d is 141 bytes inside a block of size 4,096 alloc'd
-==5576==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
-==5576==    by 0x48DDD03: _IO_file_doallocate (filedoalloc.c:101)
-==5576==    by 0x48EDECF: _IO_doallocbuf (genops.c:347)
-==5576==    by 0x48ECF2F: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:745)
-==5576==    by 0x48EB6B4: _IO_new_file_xsputn (fileops.c:1244)
-==5576==    by 0x48EB6B4: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1197)
-==5576==    by 0x48E04F7: puts (ioputs.c:40)
-==5576==    by 0x109746: main_socket_application (in /home/vboxuser/AESD/assignment-1-Suraj-Ajjampur/server/aesdsocket)
-==5576==    by 0x1096AD: main (in /home/vboxuser/AESD/assignment-1-Suraj-Ajjampur/server/aesdsocket)
-==5576==  Uninitialised value was created by a stack allocation
-==5576==    at 0x109DD0: send_file_content_to_client (in /home/vboxuser/AESD/assignment-1-Suraj-Ajjampur/server/aesdsocket)
-==5576== 
-==5576== 
-==5576== Process terminating with default action of signal 15 (SIGTERM)
-==5576==    at 0x497C0D5: accept (accept.c:26)
-==5576==    by 0x109BC9: accept_and_log_client (in /home/vboxuser/AESD/assignment-1-Suraj-Ajjampur/server/aesdsocket)
-==5576==    by 0x109A33: main_socket_application (in /home/vboxuser/AESD/assignment-1-Suraj-Ajjampur/server/aesdsocket)
-==5576==    by 0x1096AD: main (in /home/vboxuser/AESD/assignment-1-Suraj-Ajjampur/server/aesdsocket)
-==5576== 
-==5576== HEAP SUMMARY:
-==5576==     in use at exit: 0 bytes in 0 blocks
-==5576==   total heap usage: 47 allocs, 47 frees, 115,492 bytes allocated
-==5576== 
-==5576== All heap blocks were freed -- no leaks are possible
-==5576== 
-==5576== ERROR SUMMARY: 53 errors from 3 contexts (suppressed: 0 from 0)
-==5576== 
-==5576== 1 errors in context 1 of 3:
-==5576== Syscall param write(buf) points to uninitialised byte(s)
-==5576==    at 0x496A077: write (write.c:26)
-==5576==    by 0x48EAE8C: _IO_file_write@@GLIBC_2.2.5 (fileops.c:1181)
-==5576==    by 0x48EC950: new_do_write (fileops.c:449)
-==5576==    by 0x48EC950: _IO_new_do_write (fileops.c:426)
-==5576==    by 0x48EC950: _IO_do_write@@GLIBC_2.2.5 (fileops.c:423)
-==5576==    by 0x48EB6B4: _IO_new_file_xsputn (fileops.c:1244)
-==5576==    by 0x48EB6B4: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1197)
-==5576==    by 0x48D30FB: __vfprintf_internal (vfprintf-internal.c:1688)
-==5576==    by 0x48BDD3E: printf (printf.c:33)
-==5576==    by 0x109D29: receive_and_store_data (in /home/vboxuser/AESD/assignment-1-Suraj-Ajjampur/server/aesdsocket)
-==5576==    by 0x109A3D: main_socket_application (in /home/vboxuser/AESD/assignment-1-Suraj-Ajjampur/server/aesdsocket)
-==5576==    by 0x1096AD: main (in /home/vboxuser/AESD/assignment-1-Suraj-Ajjampur/server/aesdsocket)
-==5576==  Address 0x4a54e8d is 141 bytes inside a block of size 4,096 alloc'd
-==5576==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
-==5576==    by 0x48DDD03: _IO_file_doallocate (filedoalloc.c:101)
-==5576==    by 0x48EDECF: _IO_doallocbuf (genops.c:347)
-==5576==    by 0x48ECF2F: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:745)
-==5576==    by 0x48EB6B4: _IO_new_file_xsputn (fileops.c:1244)
-==5576==    by 0x48EB6B4: _IO_file_xsputn@@GLIBC_2.2.5 (fileops.c:1197)
-==5576==    by 0x48E04F7: puts (ioputs.c:40)
-==5576==    by 0x109746: main_socket_application (in /home/vboxuser/AESD/assignment-1-Suraj-Ajjampur/server/aesdsocket)
-==5576==    by 0x1096AD: main (in /home/vboxuser/AESD/assignment-1-Suraj-Ajjampur/server/aesdsocket)
-==5576==  Uninitialised value was created by a stack allocation
-==5576==    at 0x109DD0: send_file_content_to_client (in /home/vboxuser/AESD/assignment-1-Suraj-Ajjampur/server/aesdsocket)
-==5576== 
-==5576== 
-==5576== 20 errors in context 2 of 3:
-==5576== Conditional jump or move depends on uninitialised value(s)
-==5576==    at 0x483EFB8: __strlen_sse2 (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
-==5576==    by 0x48D4D14: __vfprintf_internal (vfprintf-internal.c:1688)
-==5576==    by 0x48BDD3E: printf (printf.c:33)
-==5576==    by 0x109D29: receive_and_store_data (in /home/vboxuser/AESD/assignment-1-Suraj-Ajjampur/server/aesdsocket)
-==5576==    by 0x109A3D: main_socket_application (in /home/vboxuser/AESD/assignment-1-Suraj-Ajjampur/server/aesdsocket)
-==5576==    by 0x1096AD: main (in /home/vboxuser/AESD/assignment-1-Suraj-Ajjampur/server/aesdsocket)
-==5576==  Uninitialised value was created by a stack allocation
-==5576==    at 0x109C70: receive_and_store_data (in /home/vboxuser/AESD/assignment-1-Suraj-Ajjampur/server/aesdsocket)
-==5576== 
-==5576== 
-==5576== 32 errors in context 3 of 3:
-==5576== Conditional jump or move depends on uninitialised value(s)
-==5576==    at 0x483EFB8: __strlen_sse2 (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
-==5576==    by 0x48D4D14: __vfprintf_internal (vfprintf-internal.c:1688)
-==5576==    by 0x48BDD3E: printf (printf.c:33)
-==5576==    by 0x109ED8: send_file_content_to_client (in /home/vboxuser/AESD/assignment-1-Suraj-Ajjampur/server/aesdsocket)
-==5576==    by 0x109A53: main_socket_application (in /home/vboxuser/AESD/assignment-1-Suraj-Ajjampur/server/aesdsocket)
-==5576==    by 0x1096AD: main (in /home/vboxuser/AESD/assignment-1-Suraj-Ajjampur/server/aesdsocket)
-==5576==  Uninitialised value was created by a stack allocation
-==5576==    at 0x109DD0: send_file_content_to_client (in /home/vboxuser/AESD/assignment-1-Suraj-Ajjampur/server/aesdsocket)
-==5576== 
-==5576== ERROR SUMMARY: 53 errors from 3 contexts (suppressed: 0 from 0)
+==3621== Memcheck, a memory error detector
+==3621== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==3621== Using Valgrind-3.15.0-608cb11914-20190413 and LibVEX; rerun with -h for copyright info
+==3621== Command: ./aesdsocket
+==3621== Parent PID: 3080
+==3621== 
+--3621-- 
+--3621-- Valgrind options:
+--3621--    --leak-check=full
+--3621--    --show-leak-kinds=all
+--3621--    --track-origins=yes
+--3621--    --verbose
+--3621--    --log-file=/tmp/valgrind-out.txt
+--3621-- Contents of /proc/version:
+--3621--   Linux version 5.15.0-86-generic (buildd@lcy02-amd64-062) (gcc (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0, GNU ld (GNU Binutils for Ubuntu) 2.34) #96~20.04.1-Ubuntu SMP Thu Sep 21 13:23:37 UTC 2023
+--3621-- 
+--3621-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-ssse3
+--3621-- Page sizes: currently 4096, max supported 4096
+--3621-- Valgrind library directory: /usr/lib/x86_64-linux-gnu/valgrind
+--3621-- Reading syms from /home/vboxuser/AESD/assignment-1-Suraj-Ajjampur/server/aesdsocket
+--3621-- Reading syms from /usr/lib/x86_64-linux-gnu/ld-2.31.so
+--3621--   Considering /usr/lib/debug/.build-id/45/87364908de169dec62ffa538170118c1c3a078.debug ..
+--3621--   .. build-id is valid
+--3621-- Reading syms from /usr/lib/x86_64-linux-gnu/valgrind/memcheck-amd64-linux
+--3621--    object doesn't have a symbol table
+--3621--    object doesn't have a dynamic symbol table
+--3621-- Scheduler: using generic scheduler lock implementation.
+--3621-- Reading suppressions file: /usr/lib/x86_64-linux-gnu/valgrind/default.supp
+==3621== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-3621-by-vboxuser-on-???
+==3621== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-3621-by-vboxuser-on-???
+==3621== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-3621-by-vboxuser-on-???
+==3621== 
+==3621== TO CONTROL THIS PROCESS USING vgdb (which you probably
+==3621== don't want to do, unless you know exactly what you're doing,
+==3621== or are doing some strange experiment):
+==3621==   /usr/lib/x86_64-linux-gnu/valgrind/../../bin/vgdb --pid=3621 ...command...
+==3621== 
+==3621== TO DEBUG THIS PROCESS USING GDB: start GDB like this
+==3621==   /path/to/gdb ./aesdsocket
+==3621== and then give GDB the following command
+==3621==   target remote | /usr/lib/x86_64-linux-gnu/valgrind/../../bin/vgdb --pid=3621
+==3621== --pid is optional if only one valgrind process is running
+==3621== 
+--3621-- REDIR: 0x4022e20 (ld-linux-x86-64.so.2:strlen) redirected to 0x580c9ce2 (???)
+--3621-- REDIR: 0x4022bf0 (ld-linux-x86-64.so.2:index) redirected to 0x580c9cfc (???)
+--3621-- Reading syms from /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_core-amd64-linux.so
+--3621--    object doesn't have a symbol table
+--3621-- Reading syms from /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so
+--3621--    object doesn't have a symbol table
+==3621== WARNING: new redirection conflicts with existing -- ignoring it
+--3621--     old: 0x04022e20 (strlen              ) R-> (0000.0) 0x580c9ce2 ???
+--3621--     new: 0x04022e20 (strlen              ) R-> (2007.0) 0x0483f060 strlen
+--3621-- REDIR: 0x401f600 (ld-linux-x86-64.so.2:strcmp) redirected to 0x483ffd0 (strcmp)
+--3621-- REDIR: 0x4023380 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x4843a20 (mempcpy)
+--3621-- Reading syms from /usr/lib/x86_64-linux-gnu/libc-2.31.so
+--3621--   Considering /usr/lib/debug/.build-id/18/78e6b475720c7c51969e69ab2d276fae6d1dee.debug ..
+--3621--   .. build-id is valid
+--3621-- REDIR: 0x48fc480 (libc.so.6:memmove) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--3621-- REDIR: 0x48fb780 (libc.so.6:strncpy) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--3621-- REDIR: 0x48fc7b0 (libc.so.6:strcasecmp) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--3621-- REDIR: 0x48fb0a0 (libc.so.6:strcat) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--3621-- REDIR: 0x48fb7e0 (libc.so.6:rindex) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--3621-- REDIR: 0x48fdc50 (libc.so.6:rawmemchr) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--3621-- REDIR: 0x4918ce0 (libc.so.6:wmemchr) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--3621-- REDIR: 0x4918820 (libc.so.6:wcscmp) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--3621-- REDIR: 0x48fc5e0 (libc.so.6:mempcpy) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--3621-- REDIR: 0x48fc410 (libc.so.6:bcmp) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--3621-- REDIR: 0x48fb710 (libc.so.6:strncmp) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--3621-- REDIR: 0x48fb150 (libc.so.6:strcmp) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--3621-- REDIR: 0x48fc540 (libc.so.6:memset) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--3621-- REDIR: 0x49187e0 (libc.so.6:wcschr) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--3621-- REDIR: 0x48fb670 (libc.so.6:strnlen) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--3621-- REDIR: 0x48fb230 (libc.so.6:strcspn) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--3621-- REDIR: 0x48fc800 (libc.so.6:strncasecmp) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--3621-- REDIR: 0x48fb1d0 (libc.so.6:strcpy) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--3621-- REDIR: 0x48fc950 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--3621-- REDIR: 0x4919f50 (libc.so.6:wcsnlen) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--3621-- REDIR: 0x4918860 (libc.so.6:wcscpy) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--3621-- REDIR: 0x48fb820 (libc.so.6:strpbrk) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--3621-- REDIR: 0x48fb100 (libc.so.6:index) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--3621-- REDIR: 0x48fb630 (libc.so.6:strlen) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--3621-- REDIR: 0x4904bb0 (libc.so.6:memrchr) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--3621-- REDIR: 0x48fc850 (libc.so.6:strcasecmp_l) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--3621-- REDIR: 0x48fc3d0 (libc.so.6:memchr) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--3621-- REDIR: 0x4918930 (libc.so.6:wcslen) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--3621-- REDIR: 0x48fbae0 (libc.so.6:strspn) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--3621-- REDIR: 0x48fc750 (libc.so.6:stpncpy) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--3621-- REDIR: 0x48fc6f0 (libc.so.6:stpcpy) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--3621-- REDIR: 0x48fdc90 (libc.so.6:strchrnul) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--3621-- REDIR: 0x48fc8a0 (libc.so.6:strncasecmp_l) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--3621-- REDIR: 0x490d8c0 (libc.so.6:__strrchr_sse2) redirected to 0x483ea70 (__strrchr_sse2)
+--3621-- REDIR: 0x490dbc0 (libc.so.6:__strlen_sse2) redirected to 0x483efa0 (__strlen_sse2)
+--3621-- REDIR: 0x48f60e0 (libc.so.6:malloc) redirected to 0x483b780 (malloc)
+--3621-- REDIR: 0x48f7b10 (libc.so.6:calloc) redirected to 0x483dce0 (calloc)
+--3621-- REDIR: 0x490d6b0 (libc.so.6:__strchrnul_sse2) redirected to 0x4843540 (strchrnul)
+--3621-- REDIR: 0x48f66d0 (libc.so.6:free) redirected to 0x483c9d0 (free)
+--3621-- REDIR: 0x4917ad0 (libc.so.6:memcpy@GLIBC_2.2.5) redirected to 0x4840100 (memcpy@GLIBC_2.2.5)
+--3621-- REDIR: 0x48fbfa0 (libc.so.6:__GI_strstr) redirected to 0x4843ca0 (__strstr_sse2)
+--3621-- REDIR: 0x49e9550 (libc.so.6:__memcmp_sse4_1) redirected to 0x4842150 (__memcmp_sse4_1)
+--3621-- REDIR: 0x49063b0 (libc.so.6:__strcmp_sse2_unaligned) redirected to 0x483fed0 (strcmp)
+--3621-- REDIR: 0x4917ab0 (libc.so.6:__mempcpy_sse2_unaligned) redirected to 0x4843660 (mempcpy)
+--3621-- REDIR: 0x48f6e80 (libc.so.6:realloc) redirected to 0x483df30 (realloc)
+--3621-- REDIR: 0x4917f00 (libc.so.6:__memset_sse2_unaligned) redirected to 0x48428e0 (memset)
+--3621-- REDIR: 0x4912b00 (libc.so.6:__strcpy_sse2_unaligned) redirected to 0x483f090 (strcpy)
+==3621== 
+==3621== Process terminating with default action of signal 2 (SIGINT)
+==3621==    at 0x497C0D5: accept (accept.c:26)
+==3621==    by 0x109BA9: accept_and_log_client (aesdsocket.c:398)
+==3621==    by 0x109A13: main_socket_application (aesdsocket.c:294)
+==3621==    by 0x10968D: main (aesdsocket.c:159)
+==3621== 
+==3621== HEAP SUMMARY:
+==3621==     in use at exit: 0 bytes in 0 blocks
+==3621==   total heap usage: 47 allocs, 47 frees, 112,420 bytes allocated
+==3621== 
+==3621== All heap blocks were freed -- no leaks are possible
+==3621== 
+==3621== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

@@ -2,7 +2,7 @@
 CC=$(CROSS_COMPILE)gcc
 
 # Compiler Flags
-CFLAGS += -Wall -Werror
+CFLAGS += -Wall -Werror -O0 -g
 
 # Executable
 .PHONY: all

@@ -39,6 +39,7 @@ int send_file_content_to_client(void);
 
 // Initialize all elements to false
 status_flags s_flags = {false, false, false, false, false, false, false};
+
 struct addrinfo *result;
 
 void free_and_nullify_result() {
@@ -47,6 +48,7 @@ void free_and_nullify_result() {
         result = NULL;
     }
 }
+
 
 /**
  * @name handle_termination
@@ -152,6 +154,7 @@ void cleanup_on_exit(void)
     }
     // free malloced addr struct returned
 	free_and_nullify_result();
+
 
 }
 
@@ -445,6 +448,7 @@ int receive_and_store_data(void)
     while (bytes_received > 0)
     {
         memset(&buf, 0, sizeof(buf));        // Clear the temporary buffer
+
         bytes_received = recv(clientSocketFd, buf, BUF_LEN, 0);
 
         // Check for receive errors
@@ -544,10 +548,5 @@ int send_file_content_to_client(void)
             return -1;
         }
     }
-
     return 0;
 }
-
-
-
-

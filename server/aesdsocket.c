@@ -40,6 +40,16 @@ int send_file_content_to_client(void);
 // Initialize all elements to false
 status_flags s_flags = {false, false, false, false, false, false, false};
 
+struct addrinfo *result;
+
+void free_and_nullify_result() {
+    if (result != NULL) {
+        freeaddrinfo(result);
+        result = NULL;
+    }
+}
+
+
 /**
  * @name handle_termination
  * 
@@ -142,6 +152,10 @@ void cleanup_on_exit(void)
         closelog();
         s_flags.log_open = false;
     }
+    // free malloced addr struct returned
+	free_and_nullify_result();
+
+
 }
 
 int main(int argc, char *argv[])
@@ -178,7 +192,6 @@ void main_socket_application()
 	int yes=1; /// For setsockopt() SO_REUSEADDR, below
 	
 	struct addrinfo hints;
-	struct addrinfo *result;
 	
 	// to create logs from application
 	openlog(NULL,0,LOG_USER);
@@ -270,7 +283,7 @@ void main_socket_application()
 		}
 		
 		// free malloced addr struct returned
-		freeaddrinfo(result);
+		free_and_nullify_result();
 		
         //Check for daemon mode specified by user
 		if(s_flags.daemon_mode){
@@ -415,64 +428,88 @@ int accept_and_log_client(char *ip_address)
     return 0;
 }
 
-
 /**
- * @brief Receive data over a connection and append it to a file.
+ * @brief Receive data from a client socket, accumulate it in a dynamic buffer, and write it to a file when a newline character is encountered.
  * 
- * This function receives data from a client connected to the socket and appends it to the file located at /var/tmp/aesdsocketdata.
+ * This function receives data over a client socket connection and accumulates it in a dynamically-allocated buffer.
+ * Once a newline character is encountered in the accumulated data, it writes the data to the file located at /var/tmp/aesdsocketdata.
  *
- * @return 0 on successful operation, -1 otherwise
+ * @return Returns 0 on successful operation, -1 otherwise.
  */
 int receive_and_store_data(void)
 {
-    ssize_t bytes_received = 1;  // Number of bytes received (initialize to non-zero to start loop)
-    char buf[BUF_LEN];  // Buffer to temporarily hold received data
-    int ret_status;  // Status returned by the write operation
+    ssize_t bytes_received = 1;              ///< Number of bytes received
+    char buf[BUF_LEN];                       ///< Temporary buffer to hold received data
+    int ret_status;                          ///< Status returned by the write operation
+    size_t total_bytes_received = 0;         ///< Total bytes received so far
+    char* dynamic_buf = NULL;                ///< Dynamic buffer to accumulate received data
 
-    // Loop for receiving and storing data
+    // Loop to receive and accumulate data
     while (bytes_received > 0)
     {
-        // Receive data from the client into the buffer
+        memset(&buf, 0, sizeof(buf));        // Clear the temporary buffer
+
         bytes_received = recv(clientSocketFd, buf, BUF_LEN, 0);
 
         // Check for receive errors
         if (bytes_received == ERROR)
         {
-            syslog(LOG_ERR, "Receive failed");  
+            syslog(LOG_ERR, "Receive failed");
             s_flags.command_status_success = false;
+            free(dynamic_buf);  // Free allocated memory before returning
             return -1;
         }
 
-        // Debugging Logs
-        DEBUG_LOG("Buffer : %ld", bytes_received);
-        DEBUG_LOG("Buffer : %s", buf);
-
-        // Write the received data to the file
-        ret_status = write(dataFileDescriptor, buf, bytes_received);
-
-        // Check for write errors
-        if (ret_status == ERROR)
+        // Reallocate memory for dynamic buffer
+        char* new_dynamic_buf = realloc(dynamic_buf, total_bytes_received + bytes_received);
+        if (new_dynamic_buf == NULL)
         {
-            syslog(LOG_ERR, "Writing to file unsuccessful");  
+            syslog(LOG_ERR, "Memory reallocation failed");
             s_flags.command_status_success = false;
+            free(dynamic_buf);  // Free allocated memory before returning
             return -1;
         }
+        dynamic_buf = new_dynamic_buf;
 
-        // Exit condition: Check if the last character in the buffer is a newline
-        if (bytes_received > 0 && buf[bytes_received - 1] == '\n')
+        // Copy newly received data into dynamic buffer
+        memcpy(dynamic_buf + total_bytes_received, buf, bytes_received);
+        total_bytes_received += bytes_received;
+
+        // Check entire dynamic buffer for a newline character
+        for (size_t i = 0; i < total_bytes_received; ++i)
         {
-            break;  // Exit loop if a newline character is encountered
+            if (dynamic_buf[i] == '\n')
+            {
+                // Write accumulated data to the file
+                ret_status = write(dataFileDescriptor, dynamic_buf, total_bytes_received);
+
+                if (ret_status == ERROR)
+                {
+                    syslog(LOG_ERR, "Writing to file unsuccessful");
+                    s_flags.command_status_success = false;
+                    free(dynamic_buf);  // Free allocated memory before returning
+                    return -1;
+                }
+
+                free(dynamic_buf);  // Free allocated memory before exiting loop
+                return 0;  // Successful operation
+            }
         }
     }
 
-    return 0;  
+    // Free any remaining allocated memory
+    free(dynamic_buf);
+
+    return 0;  // Return a different code if exiting without a newline should be considered an error
 }
+
 
 /**
  * @brief Send the content of a file to the client.
  * 
- * This function sends the entire content of the file located at /var/tmp/aesdsocketdata back to the client.
- *
+ * This function reads the entire content of the file located at /var/tmp/aesdsocketdata 
+ * and sends it back to the client.
+ * 
  * @return 0 on successful operation, -1 otherwise
  */
 int send_file_content_to_client(void)
@@ -502,10 +539,6 @@ int send_file_content_to_client(void)
             return -1;
         }
 
-        // Debugging information
-        DEBUG_LOG("Bytes read from file : %ld", read_count);
-        DEBUG_LOG("Content in read buffer : \n%s", file_buffer);
-
         // Transmit the read content to the client
         bytes_transmitted = send(clientSocketFd, file_buffer, read_count, 0);
         if (bytes_transmitted == ERROR)
@@ -514,16 +547,6 @@ int send_file_content_to_client(void)
             s_flags.command_status_success = false;
             return -1;
         }
-
-        // Exit condition: Check if the last character in the buffer is a newline
-        if (read_count > 0 && file_buffer[read_count - 1] == '\n')
-        {
-            break;  // Exit loop if a newline character is encountered
-        }
     }
-
-    return 0;  
+    return 0;
 }
-
-
-

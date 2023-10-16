@@ -8,4 +8,5 @@ aesd-build
 test.sh.log
 actions-runner
 *.swp
-aesdsocket
+server/aesdsocket
+server/valgrind-out

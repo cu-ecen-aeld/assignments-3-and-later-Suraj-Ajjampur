@@ -95,10 +95,10 @@ void handle_termination(int sig)
     if (pthread_cancel(TS_data.threadId) != 0) {
         syslog(LOG_ERR, "Failed to cancel active thread.");
     }
-
+    s_flags.signal_caught = true;
     // Call the function to perform any additional cleanup tasks
     cleanup_on_exit();
-
+    
     // Reset the signal handling to default and re-raise the signal for standard termination
     signal(sig, SIG_DFL);
     raise(sig);
@@ -162,11 +162,16 @@ void cleanup_on_exit(void)
         node = NULL;
     }
 
+    if(s_flags.signal_caught != true){
+
     // Join timestamp thread
     pthread_join(TS_data.threadId, NULL);
 
     // Destroy mutex lock (assuming lock is defined elsewhere)
     pthread_mutex_destroy(&lock);
+
+    }
+
 
     // Close socket
     if (s_flags.socket_open)
@@ -568,6 +573,7 @@ void* client_data_handler(void *thread_param)
               s, sizeof s);
     syslog(LOG_INFO, "New connection established: %s", s);
 
+
     syslog(LOG_INFO, "Thread %ld initialized", thread_data_ptr->threadId);
 
     // Lock mutex to protect file
@@ -598,17 +604,19 @@ void* client_data_handler(void *thread_param)
             return NULL;
         }
 
+        // Unlock mutex
+        result = pthread_mutex_unlock(thread_data_ptr->pMutex);
+        if (result == ERROR)
+        {
+        syslog(LOG_ERR, "Failed to release mutex");
+        return NULL;
+
+        }
+
         // Update the condition variable
         newline_found = memchr(receive_buffer, '\n', bytes_received);
     }
 
-    // Unlock mutex
-    result = pthread_mutex_unlock(thread_data_ptr->pMutex);
-    if (result == ERROR)
-    {
-        syslog(LOG_ERR, "Failed to release mutex");
-        return NULL;
-    }
 
     // Lock mutex to protect file
     result = pthread_mutex_lock(thread_data_ptr->pMutex);
@@ -644,16 +652,17 @@ void* client_data_handler(void *thread_param)
                 syslog(LOG_ERR, "Data transmission unsuccessful");
                 return NULL;
             }
+
+            // Unlock mutex
+            result = pthread_mutex_unlock(thread_data_ptr->pMutex);
+            if (result == ERROR)
+            {
+                syslog(LOG_ERR, "Failed to release mutex");
+                return NULL;
+            }
         }
     }
 
-    // Unlock mutex
-    result = pthread_mutex_unlock(thread_data_ptr->pMutex);
-    if (result == ERROR)
-    {
-        syslog(LOG_ERR, "Failed to release mutex");
-        return NULL;
-    }
 
     close(thread_data_ptr->clientSocketFd);
     syslog(LOG_INFO, "Terminated connection: %s", s);

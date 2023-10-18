@@ -21,6 +21,9 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 #include <signal.h>
+#include <pthread.h>
+#include <sys/queue.h>
+#include <time.h>
 
 /****************   Macros     ***************/ 
 
@@ -34,6 +37,8 @@
 #define BACKLOG_CONNECTIONS	(10)
 
 #define BUF_LEN		(1024)
+
+#define TIMESTAMP_STRING_LENGTH     100
 
 /**
  * @struct status_flags
@@ -74,5 +79,50 @@ typedef struct
     bool daemon_mode;
     bool command_status_success;
 } status_flags;
+
+/**
+ * @struct ClientThreadData
+ * @brief Holds thread-specific information for client interactions.
+ * 
+ * This structure contains the data necessary for each thread to manage 
+ * client interactions.
+ */
+typedef struct
+{
+    pthread_t threadId;                     /**< Thread identifier */
+    pthread_mutex_t *pMutex;                /**< Pointer to mutex for synchronization */
+    bool isThreadComplete;                  /**< Flag to indicate if the thread has completed its task */
+    int clientSocketFd;                     /**< File descriptor for the client socket */
+    struct sockaddr_storage *pClientAddr;   /**< Pointer to client address information */
+} ClientThreadData_t;
+
+/**
+ * @struct node
+ * @brief Node structure to hold thread data in a singly-linked list.
+ * 
+ * This node structure is part of a singly-linked list (SLIST) and 
+ * holds data related to a thread.
+ */
+typedef struct node
+{
+    ClientThreadData_t thread_data;
+
+    SLIST_ENTRY(node) nodes;
+}node_t;
+
+/**
+ * @struct ThreadTimestampData
+ * @brief Holds information related to timestamping for each thread.
+ * 
+ * This structure is designed to manage timestamping details within
+ * multi-threaded applications.
+ */
+typedef struct
+{
+    pthread_t threadId;          /**< Thread identifier */
+    pthread_mutex_t *pMutex;     /**< Pointer to mutex for synchronization */
+    int timeIntervalSecs;        /**< Time interval for timestamps in seconds */
+} ThreadTimestampData_t;
+
 
 #endif // AESDSOCKET_H

@@ -38,6 +38,7 @@ if [ ! -e ${OUTDIR}/linux-stable/arch/${ARCH}/boot/Image ]; then
 
     # TODO: Add your kernel build steps here
     # “deep clean” the kernel build tree - removing the .config file with any existing configurations
+
     make ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} mrproper
     #Configure for our “virt” arm dev board we will simulate in QEMU
     make ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} defconfig
@@ -83,12 +84,14 @@ fi
 
 # TODO: Make and install busybox
 make ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE}
+
 make CONFIG_PREFIX=${OUTDIR}/rootfs ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} install
 echo "Library dependencies"
 
 # Added needed shared libraries from toolchain sysroot
 ${CROSS_COMPILE}readelf -a ${OUTDIR}/rootfs/bin/busybox | grep "program interpreter"
 ${CROSS_COMPILE}readelf -a ${OUTDIR}/rootfs/bin/busybox | grep "Shared library"
+
 
 # TODO: Add library dependencies to rootfs
 ROOT=$(${CROSS_COMPILE}gcc --print-sysroot)
@@ -97,6 +100,7 @@ sudo cp ${ROOT}/lib64/libc.so.* ${OUTDIR}/rootfs/lib64
 sudo cp ${ROOT}/lib64/libm.so.* ${OUTDIR}/rootfs/lib64
 sudo cp ${ROOT}/lib64/libresolv.so.* ${OUTDIR}/rootfs/lib64
 # TODO: Make device nodes
+
 # Created character device nodes modified permissions to 666 and major and minur numbers
 sudo mknod -m 666 ${OUTDIR}/rootfs/dev/null c 1 3
 sudo mknod -m 666 ${OUTDIR}/rootfs/dev/console c 5 1
@@ -114,6 +118,10 @@ cp autorun-qemu.sh ${OUTDIR}/rootfs/home
 
 # TODO: Chown the root directory
 cd ${OUTDIR}/rootfs/
+sudo chown -R root:root *
+# TODO: Create initramfs.cpio.gz
+find . | cpio -H newc -ov --owner root:root > ${OUTDIR}/initramfs.cpio
+
 # Make the contents owned by root
 sudo chown -R root:root *
 # TODO: Create initramfs.cpio.gz

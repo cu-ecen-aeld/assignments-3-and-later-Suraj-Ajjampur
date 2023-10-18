@@ -18,18 +18,66 @@
 bool do_system(const char *cmd) {
     // Create a pipe to capture the command's output
     int status = system(cmd);
-
+    
     if(-1 == status){
 	 //Log error
 	  return false;
     }
 	
-    // WIFEXITED is a macro used to check if the child process (created for executing the command) has exited normally.
-    if(!WIFEXITED(status)){
-	    return false;
+    if (WIFEXITED(status)) {
+        // Child process exited normally
+        return (WEXITSTATUS(status) == 0);
+    } 
+    else 
+    {
+            // Child process did not exit normally
+            return false;
     }
 
     return true;
+}
+
+bool execute_command(char * command[], int redirect_fd)
+{
+    pid_t child_pid = fork();
+
+    if (child_pid == -1) {
+        // Fork failed
+        syslog(LOG_ERR, "Fork failed");
+        return false;
+    }
+
+    if (child_pid == 0) {
+        // This is the child process
+
+        // Redirect stdout if necessary
+        if (redirect_fd != -1) {
+            if (dup2(redirect_fd, 1) == -1) {
+                syslog(LOG_ERR, "Failed to redirect stdout");
+                exit(EXIT_FAILURE);
+            }
+        }
+
+        // Execute the command
+        if (execv(command[0], command) == -1) {
+            syslog(LOG_ERR, "execv failed");
+            exit(EXIT_FAILURE);
+        }
+    } else {
+        // This is the parent process
+        int status;
+
+        // Wait for the child process to finish
+        wait(&status);
+
+        if (WIFEXITED(status)) {
+            return (WEXITSTATUS(status) == 0);
+        } else {
+            return false;
+        }
+    }
+
+    return true;  // Should never reach here
 }
 
 /**
@@ -62,7 +110,11 @@ bool do_exec(int count, ...)
     }
     //Sets the last element of array to NULL to terminal the argument list
     command[count] = NULL;
+    
+    va_end(args);
 
+    //Calling execute_command to avoid duplicating functionality
+    return execute_command(command, -1);
 	/*
 	 * TODO:
 	 *   Execute a system command by calling fork, execv(),
@@ -72,68 +124,6 @@ bool do_exec(int count, ...)
 	 *   as second argument to the execv() command.
 	 *
 	*/
-
-
-    // Create a child process
-   pid_t child_pid = fork();
-
-    if (child_pid == -1) {
-        // Fork failed
-        openlog("MyProgram", LOG_PID | LOG_CONS, LOG_USER);
-        syslog(LOG_ERR, "Fork failed");
-        closelog();
-        exit(EXIT_FAILURE);
-    }
-
-    if (child_pid == 0) {
-        // This code is executed by the child process
-        openlog("MyProgram", LOG_PID | LOG_CONS, LOG_USER);
-        syslog(LOG_INFO, "Child process (PID: %d)", getpid());
-        closelog();
-
-    // This if statement  was fully generated using ChatGPT at https://chat.openai.com/ with prompts including
-    /* can we do this?
-    int exec_status =  execv(command[0],command);
-    if(exec_status == -1){
-            return false;
-    }
-    */
-
-    	// Execute the command in the child process
-    	if (execv(command[0], command) == -1) {
-        	// If execv returns, it indicates an error
-        	openlog("MyProgram", LOG_PID | LOG_CONS, LOG_USER);
-        	syslog(LOG_ERR, "execv failed");
-	        closelog();
-
-        	// Terminate the child process
-       		 exit(EXIT_FAILURE);
-   		 }
-	}
-   else {
-      	 // This code is executed by the parent process
-        openlog("MyProgram", LOG_PID | LOG_CONS, LOG_USER);
-        syslog(LOG_INFO, "Parent process (Child PID: %d)", child_pid);
-        closelog();
-        int status;
-
-        // Wait for the child process to finish
-        wait(&status);
-
-        va_end(args); // Cleanup va_list
-
-        if (WIFEXITED(status)) {
-            // Child process exited normally
-            return (WEXITSTATUS(status) == 0);
-        } else {
-            // Child process did not exit normally
-            return false;
-        }
-    }
-
-   //va_end(args);
-
-    return true;
 }
 
 /**
@@ -161,7 +151,6 @@ bool do_exec_redirect(const char *outputfile, int count, ...)
  *
 */
 
-
     // Create a file descriptor for the output file
     int output_fd = open(outputfile, O_WRONLY | O_CREAT | O_TRUNC, 0666);
     if (output_fd == -1) {
@@ -173,77 +162,10 @@ bool do_exec_redirect(const char *outputfile, int count, ...)
         return false;
     }
 
-    // Redirect stdout to the output file
-    if (dup2(output_fd, 1) == -1) {
-        // Redirecting stdout failed
-        openlog("MyProgram", LOG_PID | LOG_CONS, LOG_USER);
-        syslog(LOG_ERR, "Failed to redirect stdout");
-        closelog();
-        close(output_fd);
-        va_end(args);
-        return false;
-    }
-
-    // Close the output file descriptor as it's no longer needed
+    bool result = execute_command(command, output_fd);
     close(output_fd);
 
-    // Create a child process
-    pid_t child_pid = fork();
-
-    if (child_pid == -1) {
-        // Fork failed
-        openlog("MyProgram", LOG_PID | LOG_CONS, LOG_USER);
-        syslog(LOG_ERR, "Fork failed");
-        closelog();
-        va_end(args);
-        return false;
-    }
-
-    if (child_pid == 0) {
-        // This code is executed by the child process
-        openlog("MyProgram", LOG_PID | LOG_CONS, LOG_USER);
-        syslog(LOG_INFO, "Child process (PID: %d)", getpid());
-        closelog();
-
-        // Execute the command in the child process
-        if (execv(command[0], command) == -1) {
-            // If execv returns, it indicates an error
-            openlog("MyProgram", LOG_PID | LOG_CONS, LOG_USER);
-            syslog(LOG_ERR, "execv failed");
-            closelog();
-
-            // Terminate the child process
-            exit(EXIT_FAILURE);
-        }
-    } else {
-        // This code is executed by the parent process
-        openlog("MyProgram", LOG_PID | LOG_CONS, LOG_USER);
-        syslog(LOG_INFO, "Parent process (Child PID: %d)", child_pid);
-        closelog();
-        int status;
-
-        // Wait for the child process to finish
-        if (wait(&status) == -1) {
-            // Wait failed
-            openlog("MyProgram", LOG_PID | LOG_CONS, LOG_USER);
-            syslog(LOG_ERR, "Wait failed");
-            closelog();
-            va_end(args);
-            return false;
-        }
-
-        va_end(args);
-
-        if (WIFEXITED(status)) {
-            // Child process exited normally
-            return (WEXITSTATUS(status) == 0);
-        } else {
-            // Child process did not exit normally
-            return false;
-        }
-    }
-
-    va_end(args);
-
-    return true;
+    return result;
 }
+
+

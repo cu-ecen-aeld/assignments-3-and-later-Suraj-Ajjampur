@@ -161,13 +161,17 @@ void cleanup_on_exit(void)
         free(node);
         node = NULL;
     }
+
     if(s_flags.signal_caught != true){
+
     // Join timestamp thread
     pthread_join(TS_data.threadId, NULL);
 
     // Destroy mutex lock (assuming lock is defined elsewhere)
     pthread_mutex_destroy(&lock);
+
     }
+
 
     // Close socket
     if (s_flags.socket_open)
@@ -569,6 +573,7 @@ void* client_data_handler(void *thread_param)
               s, sizeof s);
     syslog(LOG_INFO, "New connection established: %s", s);
 
+
     syslog(LOG_INFO, "Thread %ld initialized", thread_data_ptr->threadId);
 
     // Lock mutex to protect file
@@ -605,11 +610,13 @@ void* client_data_handler(void *thread_param)
         {
         syslog(LOG_ERR, "Failed to release mutex");
         return NULL;
+
         }
 
         // Update the condition variable
         newline_found = memchr(receive_buffer, '\n', bytes_received);
     }
+
 
     // Lock mutex to protect file
     result = pthread_mutex_lock(thread_data_ptr->pMutex);
@@ -655,6 +662,7 @@ void* client_data_handler(void *thread_param)
             }
         }
     }
+
 
     close(thread_data_ptr->clientSocketFd);
     syslog(LOG_INFO, "Terminated connection: %s", s);

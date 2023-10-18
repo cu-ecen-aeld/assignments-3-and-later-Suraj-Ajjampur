@@ -1,16 +1,19 @@
-# Is compiled by the “all” and “default” target of a Makefile in the “server” directory and 
-# supports cross compilation, placing the executable file in the “server” directory and named aesdsocket.
+# Cross compiler 
+CC ?= $(CROSS_COMPILE)gcc
+# Compiler Flags
+CFLAGS ?= -Wall -Werror -g
+LDFLAGS ?= -pthread -lrt
 
-CC=$(CROSS_COMPILE)gcc
-all: aesdsocket
+# Executable
+SRCS = aesdsocket.c
+EXEC = aesdsocket
 
-aesdsocket: aesdsocket.o
-	$(CC) -o aesdsocket aesdsocket.o
-	chmod +x aesdsocket
+default : $(EXEC)
+all : $(EXEC)
 
-writer.o: aesdsocket.c
-	$(CC) -c aesdsocket.c
+$(EXEC): $(SRCS)
+	$(CC) $(SRCS) $(CFLAGS) $(LDFLAGS) -o $(EXEC)
+
 
 clean:
-	rm -f  aesdsocket.o aesdsocket
-	
+	-rm -rf *.o $(EXEC)

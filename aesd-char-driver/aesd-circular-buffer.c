@@ -29,20 +29,27 @@
 struct aesd_buffer_entry *aesd_circular_buffer_find_entry_offset_for_fpos(struct aesd_circular_buffer *buffer,
             size_t char_offset, size_t *entry_offset_byte_rtn )
 {
-    size_t curr_offset = 0;
+    size_t accumulated_byte_count = 0; // Accumulator for the byte count traversed so far
 
+    // Loop to traverse the circular buffer entries
     for (size_t i = buffer->out_offs, j=0 ; ((i != buffer->in_offs) || buffer->full) && (j<10) ; j++)
     {
-   
-        if((curr_offset + buffer->entry[i].size) > char_offset)
+        // Check if the character offset falls within this buffer entry
+        if((accumulated_byte_count + buffer->entry[i].size) > char_offset)
         {
-            *entry_offset_byte_rtn = char_offset - curr_offset;
+            // Calculate the byte offset within this entry and return this entry
+            *entry_offset_byte_rtn = char_offset - accumulated_byte_count;
             return &buffer->entry[i];
         }
-        curr_offset += buffer->entry[i].size;
+        
+        // Update the accumulated byte count
+        accumulated_byte_count += buffer->entry[i].size;
+        
+        // Circularly increment the index for the next iteration
         i = (i + 1) % AESDCHAR_MAX_WRITE_OPERATIONS_SUPPORTED;
     }
-    return NULL;
+    
+    return NULL; // Return NULL if the specified character offset is not found in the buffer
 }
 
 /**
@@ -54,18 +61,24 @@ struct aesd_buffer_entry *aesd_circular_buffer_find_entry_offset_for_fpos(struct
 */
 void aesd_circular_buffer_add_entry(struct aesd_circular_buffer *buffer, const struct aesd_buffer_entry *add_entry)
 {
-    if((add_entry == NULL) || (buffer == NULL))                                    // Check for corner cases //
+    // Validate the input parameters; exit if either is NULL
+    if(!add_entry || !buffer) {
         return;
-
-    buffer->entry[buffer->in_offs] = *add_entry;
-    ++buffer->in_offs;
-    if (buffer->in_offs == AESDCHAR_MAX_WRITE_OPERATIONS_SUPPORTED){               // Wrap around condition //
-        buffer->in_offs = 0;
     }
-    if (buffer->full){                                                             // out = in -> if buffer is full //
+
+    // Add the new entry at the current "in" index
+    buffer->entry[buffer->in_offs] = *add_entry;
+
+    // Increment the "in" index and wrap around if necessary
+    buffer->in_offs = (buffer->in_offs + 1) % AESDCHAR_MAX_WRITE_OPERATIONS_SUPPORTED;
+
+    // If the buffer is full, update the "out" index to the new start
+    if(buffer->full) {
         buffer->out_offs = buffer->in_offs;
     }
-    buffer->full = (buffer->in_offs == buffer->out_offs)?true:false;               // Update buffer full flag //
+
+    // Update the buffer's "full" status flag
+    buffer->full = (buffer->in_offs == buffer->out_offs);
 }
 
 /**

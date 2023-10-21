@@ -1,5 +1,1 @@
-<<<<<<< HEAD
-assignment6
-=======
 assignment7
->>>>>>> assignments-base/assignment7

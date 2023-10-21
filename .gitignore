@@ -7,7 +7,7 @@ aesd-build
 .vscode/
 test.sh.log
 *.swp
-server/valgrind-out
+aesdsocket
 server/aesdsocket
-
+server/valgrind-out.txt
 

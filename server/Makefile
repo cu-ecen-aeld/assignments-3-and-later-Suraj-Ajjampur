@@ -1,20 +1,19 @@
-# Cross compiler
-CC=$(CROSS_COMPILE)gcc
-
+# Cross compiler 
+CC ?= $(CROSS_COMPILE)gcc
 # Compiler Flags
-CFLAGS += -Wall -Werror -O0 -g
+CFLAGS ?= -Wall -Werror -g
+LDFLAGS ?= -pthread -lrt
 
 # Executable
-.PHONY: all
-all: aesdsocket
+SRCS = aesdsocket.c
+EXEC = aesdsocket
 
-aesdsocket: aesdsocket.o
-	$(CC) $(CFLAGS) -o aesdsocket aesdsocket.o
-	chmod +x aesdsocket
+default : $(EXEC)
+all : $(EXEC)
 
-aesdsocket1.o: aesdsocket.c
-	$(CC) $(CFLAGS) -c aesdsocket.c
+$(EXEC): $(SRCS)
+	$(CC) $(SRCS) $(CFLAGS) $(LDFLAGS) -o $(EXEC)
 
-.PHONY: clean
+
 clean:
-	rm -f  aesdsocket.o aesdsocket
+	-rm -rf *.o $(EXEC)

@@ -41,5 +41,4 @@ struct aesd_dev
     size_t write_buffer_size; /* Amount of data currently stored in buffer*/
 };
 
-
 #endif /* AESD_CHAR_DRIVER_AESDCHAR_H_ */

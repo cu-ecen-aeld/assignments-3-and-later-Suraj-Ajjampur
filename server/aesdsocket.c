@@ -100,9 +100,9 @@ void handle_termination(int sig)
     }
 
     // Attempt to cancel any active threads and log an error if unsuccessful
-    if (pthread_cancel(TS_data.threadId) != 0) {
-        syslog(LOG_ERR, "Failed to cancel active thread.");
-    }
+    // if (pthread_cancel(TS_data.threadId) != 0) {
+    //     syslog(LOG_ERR, "Failed to cancel active thread.");
+    // }
     s_flags.signal_caught = true;
     // Call the function to perform any additional cleanup tasks
     cleanup_on_exit();

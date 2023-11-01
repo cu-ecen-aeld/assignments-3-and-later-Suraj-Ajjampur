@@ -165,8 +165,8 @@ ssize_t aesd_write(struct file *filp, const char __user *buf, size_t count, loff
 
     // Extracting character device instance from the file structure.
     struct aesd_dev *char_dev = filp->private_data;
-	char_dev->write_buffer = NULL;
-	char_dev->write_buffer_size = 0;
+	// char_dev->write_buffer = NULL;
+	// char_dev->write_buffer_size = 0;
 
     // Dynamically allocate memory for the data to be written.
     char *write_data = kmalloc(count, GFP_KERNEL);
@@ -174,6 +174,7 @@ ssize_t aesd_write(struct file *filp, const char __user *buf, size_t count, loff
     // Check for memory allocation failure.
     if(!write_data)
     {
+        //Handle error case
         PDEBUG("Kmalloc failed while writing");
         return retval;
     }
@@ -181,6 +182,7 @@ ssize_t aesd_write(struct file *filp, const char __user *buf, size_t count, loff
     // Copy data from user space to kernel space.
     if (copy_from_user(write_data, buf, count)) 
     {
+        //Handler error case
         retval = -EFAULT;
         kfree(write_data);
         return retval;
@@ -210,19 +212,23 @@ ssize_t aesd_write(struct file *filp, const char __user *buf, size_t count, loff
     size_t append_index = 0;
 	
     // Determine the amount of data to append based on newline's presence.
-    if(newline_found == true)
+    if(newline_found == true){
         append_index = write_index + 1;
-    else
+        PDEBUG("Write data is %s", &write_data);        
+    }
+    else{
         append_index = count;
+        PDEBUG("Write data is %s", &write_data);
+    }
 
     // Check if a device write buffer is already initialized.
     if(char_dev->write_buffer_size == 0)
     {
         char_dev->write_buffer = kmalloc(count, GFP_KERNEL);
-        if(!char_dev->write_buffer)
+        if(char_dev->write_buffer == NULL)
         {
             kfree(write_data);
-			mutex_unlock(&char_dev->lock);
+			//mutex_unlock(&char_dev->lock);
             return retval;
         }
     }
@@ -230,7 +236,7 @@ ssize_t aesd_write(struct file *filp, const char __user *buf, size_t count, loff
     {
         // Reallocate memory to accommodate the new data.
         char_dev->write_buffer = krealloc(char_dev->write_buffer, (append_index + char_dev->write_buffer_size), GFP_KERNEL);
-        if(!char_dev->write_buffer)
+        if(char_dev->write_buffer == NULL)
         {
             kfree(write_data);
             mutex_unlock(&char_dev->lock);
@@ -271,7 +277,6 @@ ssize_t aesd_write(struct file *filp, const char __user *buf, size_t count, loff
     }
 
     retval = append_index;
-
     // Free the temporary buffer.
     if(write_data)
         kfree(write_data);
@@ -333,7 +338,8 @@ int aesd_init_module(void)
      */
     aesd_circular_buffer_init(&aesd_device.buffer); // Circular Buffer init
     mutex_init(&aesd_device.lock);  // Initialize locking primitive
-
+    aesd_device.write_buffer ==NULL;
+    aesd_device.write_buffer_size =0;
     result = aesd_setup_cdev(&aesd_device);
 
     if( result ) {

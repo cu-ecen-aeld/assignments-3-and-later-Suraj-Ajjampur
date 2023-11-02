@@ -22,9 +22,8 @@ PWD       := $(shell pwd)
 
 modules:
 	$(MAKE) -C $(KERNELDIR) M=$(PWD) modules
-
+	chmod +x *.ko
 endif
 
 clean:
 	rm -rf *.o *~ core .depend .*.cmd *.ko *.mod.c .tmp_versions
-

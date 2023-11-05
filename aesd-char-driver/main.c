@@ -18,6 +18,7 @@
 #include <linux/types.h>
 #include <linux/cdev.h>
 #include <linux/slab.h>
+#include "aesd_ioctl.h"
 #include <linux/fs.h> // file_operations
 #include "aesdchar.h"
 int aesd_major =   0; // use dynamic major
@@ -291,6 +292,139 @@ ssize_t aesd_write(struct file *filp, const char __user *buf, size_t count, loff
 
     return retval;
 }
+/*
+ * Description: Kernel lseek implementation
+ * file: File structure to seek on
+ * offset: File offset to seek to
+ * whence: Type of seek (SEEK_SET, SEEK_CUR, SEEK_END)
+ */
+loff_t aesd_llseek(struct file *file, loff_t offset, int whence)
+{
+	loff_t retval;
+	struct aesd_dev *char_dev = file->private_data;
+
+	// Lock the mutex with interruptible support
+	if (mutex_lock_interruptible(&aesd_device.lock)) {
+		return -ERESTARTSYS;
+	}
+
+	// Call the fixed_size_llseek function to perform the seek operation
+	retval = fixed_size_llseek(file, offset, whence, char_dev->write_buffer_size);
+
+	// Check for errors returned by fixed_size_llseek
+	if (retval < 0) {
+		goto unlock;
+	}
+
+unlock:
+	// Unlock the mutex before returning (including in case of errors)
+	mutex_unlock(&aesd_device.lock);
+	return retval;
+}
+
+/**
+ * Adjust the file offset (f_pos) parameter in @param filp based on the location specified by 
+ * @param write_cmd (referenced command to locate) and @param write_cmd_offset (the zero-referenced offset command to locate).
+ * @return 0 if successful, negative value if an error occurred:
+ * 
+ * - ERESTARTSYS if the mutex could not be obtained
+ * - EINVAL if write_cmd or write_cmd_offset was out of range
+ */
+static long aesd_adjust_file_offset(struct file *filp, unsigned int write_cmd, unsigned int write_cmd_offset)
+{
+	long retval = 0;
+	struct aesd_dev *char_dev = filp->private_data;
+	loff_t updated_fpos_offset = 0;
+
+	// Lock the mutex to ensure exclusive access to device data
+	if (mutex_lock_interruptible(&aesd_device.lock)) {
+		return -ERESTARTSYS;
+	}
+
+	// Check for valid write_cmd
+	if (write_cmd >= AESDCHAR_MAX_WRITE_OPERATIONS_SUPPORTED)
+	{
+		retval = -EINVAL;
+		goto unlock;
+	}
+
+	// Check for valid write_cmd_offset
+	if (write_cmd_offset >= char_dev->buffer.entry[write_cmd].size)
+	{
+		retval = -EINVAL;
+		goto unlock;
+	}
+    unsigned int i;
+	// Calculate the updated file position offset
+	for (i = 0; i < write_cmd; i++)
+	{
+		updated_fpos_offset += char_dev->buffer.entry[i].size;
+	}
+
+	// Update the file pointer with the new located offset
+	filp->f_pos = updated_fpos_offset + write_cmd_offset;
+
+unlock:
+	// Unlock the mutex before returning
+	mutex_unlock(&aesd_device.lock);
+	return retval;	// Return 0 for success or an error code
+}
+
+/**
+ * @brief Implements the ioctl function for the AESDCHAR_IOCSEEKTO command.
+ *
+ * This function allows seeking to a specific position within the data stored by the driver.
+ *
+ * @param filp Pointer to the file structure.
+ * @param cmd The ioctl command to be executed.
+ * @param arg User-space pointer to the argument data.
+ * @return Returns 0 on success or a negative error code on failure:
+ *   - EFAULT if copying data from user space fails.
+ *   - ENOTTY if the ioctl command is not supported.
+ *   - EINVAL if the seek parameters are out of range.
+ */
+long aesd_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+{
+	long retval = 0;
+
+	// Check if the ioctl command type and number are valid
+	if ((_IOC_TYPE(cmd) != AESD_IOC_MAGIC) || (_IOC_NR(cmd) > AESDCHAR_IOC_MAXNR))
+	{
+		retval = -ENOTTY;  // Return code for unsupported ioctl command
+		return retval;
+	}
+
+	struct aesd_seekto seekto;
+
+	switch (cmd)
+	{
+		case AESDCHAR_IOCSEEKTO:
+			// Copy the seekto structure from user space
+			if (copy_from_user(&seekto, (const void __user *)arg, sizeof(seekto)) != 0)
+			{
+				retval = -EFAULT; // Return code for copy_from_user failure
+			}
+			else
+			{
+				// Call aesd_adjust_file_offset to perform the seek operation
+				retval = aesd_adjust_file_offset(filp, seekto.write_cmd, seekto.write_cmd_offset);
+
+				// Check if the seek parameters are out of range
+				if (retval == -EINVAL)
+				{
+					//retval = -EINVAL; // Return code for invalid seek parameters
+					    PDEBUG("Invalid seek parameters\n"); // Additional error handling or logging can be added here if needed
+				}
+			}
+			break;
+
+		default:
+			retval = -ENOTTY; // Return code for unsupported ioctl command
+			break;
+	}
+
+	return retval;
+}
 
 /**
  * @brief Setting up the function pointer for operations
@@ -300,7 +434,9 @@ struct file_operations aesd_fops = {
     .read =     aesd_read,
     .write =    aesd_write,
     .open =     aesd_open,
-    .release =  aesd_release,
+    .release =  aesd_release, 
+    .llseek = aesd_llseek,
+    .unlocked_ioctl = aesd_ioctl,
 };
 
 

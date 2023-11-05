@@ -15,10 +15,10 @@ sudo ./aesd-char-driver/aesdchar_load
 #Loaded the char device module
 cat /proc/devices | grep "aesdchar"
 #Check if aesdchar driver is in the current list of allocated drivers
-#./assignment-autotest/test/assignment8/drivertest.sh
+./assignment-autotest/test/assignment9/drivertest.sh
 
-cd server/
-make clean && make
-./aesdsocket
+#cd server/
+#make clean && make
+#./aesdsocket
 #./assignment-autotest/test/assignment5/sockettest.sh
 #strace -o /tmp/strace-aesdsocket.txt -f ./aesd-char-driver/aesdchar.ko

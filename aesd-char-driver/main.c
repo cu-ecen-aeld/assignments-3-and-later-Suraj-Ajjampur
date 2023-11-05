@@ -188,13 +188,6 @@ ssize_t aesd_write(struct file *filp, const char __user *buf, size_t count, loff
         return retval;
     }
 
-    // Lock the mutex for synchronizing access.
-    if(mutex_lock_interruptible(&char_dev->lock) != 0)
-    {
-        PDEBUG("Error in write mutex locking");
-        return -ERESTARTSYS; //Allow system to be restartable
-    }
-
     size_t write_index = 0;  // Index to traverse through the buffer.
     bool newline_found = false;
 
@@ -219,6 +212,13 @@ ssize_t aesd_write(struct file *filp, const char __user *buf, size_t count, loff
     else{
         append_index = count;
         PDEBUG("Write data is %s", &write_data);
+    }
+    
+    // Lock the mutex for synchronizing access.
+    if(mutex_lock_interruptible(&char_dev->lock) != 0)
+    {
+        PDEBUG("Error in write mutex locking");
+        return -ERESTARTSYS; //Allow system to be restartable
     }
 
     // Check if a device write buffer is already initialized.

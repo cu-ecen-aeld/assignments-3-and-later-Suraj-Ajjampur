@@ -43,6 +43,7 @@ int aesd_open(struct inode *inode, struct file *filp)
     /**
      * TODO: handle open
      */
+
     // The below line assigns expands to a new address pointing to the container which accommocates the cdev member
     struct aesd_dev *dev = container_of(inode->i_cdev, struct aesd_dev, cdev);
     filp->private_data = dev;
@@ -58,6 +59,7 @@ int aesd_release(struct inode *inode, struct file *filp)
      */
     return 0;
 }
+
 
 /**
  * @brief This function reads data from a device managed by the aesd character driver. 
@@ -301,6 +303,7 @@ struct file_operations aesd_fops = {
     .release =  aesd_release,
 };
 
+
 /**
  * @brief Adds the device into the linux kernel
  */
@@ -336,6 +339,7 @@ int aesd_init_module(void)
     /**
      * TODO: initialize the AESD specific portion of the device
      */
+
     aesd_circular_buffer_init(&aesd_device.buffer); // Circular Buffer init
     mutex_init(&aesd_device.lock);  // Initialize locking primitive
     aesd_device.write_buffer ==NULL;
@@ -349,6 +353,7 @@ int aesd_init_module(void)
 
 }
 
+
 /**
  * @brief That happens as a part of driver release
 */
@@ -361,6 +366,7 @@ void aesd_cleanup_module(void)
     /**
      * TODO: cleanup AESD specific poritions here as necessary
      */
+
     int8_t index;
     struct aesd_buffer_entry *entry;
     AESD_CIRCULAR_BUFFER_FOREACH(entry,&aesd_device.buffer,index) {

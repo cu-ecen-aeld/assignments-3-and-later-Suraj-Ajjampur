@@ -15,7 +15,13 @@
 #include "aesdsocket.h"
 
 /****************   Macros     ***************/ 
-#define DATA_FILE "/var/tmp/aesdsocketdata"
+#define USE_AESD_CHAR_DEVICE
+
+#ifdef USE_AESD_CHAR_DEVICE
+	#define DATA_FILE "/dev/aesdchar"
+#else
+	#define DATA_FILE "/var/tmp/aesdsocketdata"
+#endif
 
 /****************   Global Variables     ***************/ 
 sig_atomic_t fatal_error_in_progress = 0;
@@ -33,8 +39,10 @@ SLIST_HEAD(head_s, node) head;
 node_t * node = NULL;
 // thread mutex
 pthread_mutex_t lock;
+#ifndef USE_AESD_CHAR_DEVICE
 // timestamp struct
 ThreadTimestampData_t TS_data;
+#endif
 // to print IP
 char s[INET6_ADDRSTRLEN];
 
@@ -92,9 +100,9 @@ void handle_termination(int sig)
     }
 
     // Attempt to cancel any active threads and log an error if unsuccessful
-    if (pthread_cancel(TS_data.threadId) != 0) {
-        syslog(LOG_ERR, "Failed to cancel active thread.");
-    }
+    // if (pthread_cancel(TS_data.threadId) != 0) {
+    //     syslog(LOG_ERR, "Failed to cancel active thread.");
+    // }
     s_flags.signal_caught = true;
     // Call the function to perform any additional cleanup tasks
     cleanup_on_exit();
@@ -147,11 +155,13 @@ void cleanup_on_exit(void)
     }
 
     // Delete data file
+#ifndef USE_AESD_CHAR_DEVICE
     ret_status = unlink(DATA_FILE);
     if(ret_status == -1)
     {
         syslog(LOG_ERR, "Failed to delete data file.");
     }
+#endif
 
     // Free elements from the queue if any (assuming head is defined elsewhere)
     while (!SLIST_EMPTY(&head))
@@ -163,10 +173,10 @@ void cleanup_on_exit(void)
     }
 
     if(s_flags.signal_caught != true){
-
+#ifndef USE_AESD_CHAR_DEVICE
     // Join timestamp thread
     pthread_join(TS_data.threadId, NULL);
-
+#endif
     // Destroy mutex lock (assuming lock is defined elsewhere)
     pthread_mutex_destroy(&lock);
 
@@ -254,12 +264,12 @@ void main_socket_application()
     int yes = 1;  // for setsockopt()
 
     // Open the data file
-    dataFileDescriptor = open(DATA_FILE, O_RDWR | O_CREAT | O_APPEND, S_IWUSR | S_IRUSR | S_IWGRP | S_IRGRP | S_IROTH);
-    if(dataFileDescriptor == ERROR)
-    {
-        syslog(LOG_ERR, "Data file open failed");
-        return;
-    }
+    // dataFileDescriptor = open(DATA_FILE, O_RDWR | O_CREAT | O_APPEND, S_IWUSR | S_IRUSR | S_IWGRP | S_IRGRP | S_IROTH);
+    // if(dataFileDescriptor == ERROR)
+    // {
+    //     syslog(LOG_ERR, "Data file open failed");
+    //     return;
+    // }
 
     // signal handler for SIGINT and SIGTERM
     signal(SIGINT, handle_termination);
@@ -336,7 +346,7 @@ void main_socket_application()
             return;
         }
     }
-    
+#ifndef USE_AESD_CHAR_DEVICE
     // Set up timestamp
     ret_status = setup_time_logging();
     if(ret_status == ERROR)
@@ -345,6 +355,7 @@ void main_socket_application()
         cleanup_on_exit();
         return;
     }
+#endif 
 
     // STEP 3: Listen for and accept connections
     ret_status = listen(sock_fd, BACKLOG_CONNECTIONS);
@@ -571,6 +582,13 @@ void* client_data_handler(void *thread_param)
     inet_ntop(thread_data_ptr->pClientAddr->ss_family,
               get_in_addr((struct sockaddr *)&(thread_data_ptr->pClientAddr)),
               s, sizeof s);
+    
+    dataFileDescriptor = open(DATA_FILE, O_RDWR | O_APPEND | O_CREAT, 0644);
+        if (ERROR == dataFileDescriptor)
+        {
+                perror("File open");
+                syslog(LOG_ERR, "File Open");
+        }
     syslog(LOG_INFO, "New connection established: %s", s);
 
 
@@ -616,7 +634,7 @@ void* client_data_handler(void *thread_param)
         // Update the condition variable
         newline_found = memchr(receive_buffer, '\n', bytes_received);
     }
-
+    close(dataFileDescriptor);
 
     // Lock mutex to protect file
     result = pthread_mutex_lock(thread_data_ptr->pMutex);
@@ -625,12 +643,23 @@ void* client_data_handler(void *thread_param)
         syslog(LOG_ERR, "Failed to acquire mutex");
         return NULL;
     }
+#ifndef USE_AESD_CHAR_DEVICE
 
     off_t seek_result = lseek(dataFileDescriptor, 0, SEEK_SET);
     if (seek_result == ERROR)
     {
         syslog(LOG_ERR, "Failed to seek in the file");
         return NULL;
+    }
+
+#endif
+
+	// Open fd for read mode
+	dataFileDescriptor = open(DATA_FILE, O_RDONLY, 0444);
+    if (ERROR == dataFileDescriptor)
+    {
+        perror("File open");
+        syslog(LOG_ERR, "File Open");
     }
 
     // Loop as long as bytes_from_file is greater than 0
@@ -669,9 +698,10 @@ void* client_data_handler(void *thread_param)
 
     thread_data_ptr->isThreadComplete = true;
 
+    close(dataFileDescriptor);
     return thread_param;
 }
-
+#ifndef USE_AESD_CHAR_DEVICE
 /**
  * @brief Initializes the timestamp structure and creates a thread for logging timestamps.
  * 
@@ -772,3 +802,4 @@ void *log_timestamps(void *arg)
     return NULL; // Return NULL for good measure, though we never actually get here
 }
 
+#endif

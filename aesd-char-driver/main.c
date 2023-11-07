@@ -168,8 +168,6 @@ ssize_t aesd_write(struct file *filp, const char __user *buf, size_t count, loff
 
     // Extracting character device instance from the file structure.
     struct aesd_dev *char_dev = filp->private_data;
-	// char_dev->write_buffer = NULL;
-	// char_dev->write_buffer_size = 0;
 
     // Dynamically allocate memory for the data to be written.
     char *write_data = kmalloc(count, GFP_KERNEL);
@@ -231,7 +229,7 @@ ssize_t aesd_write(struct file *filp, const char __user *buf, size_t count, loff
         if(char_dev->write_buffer == NULL)
         {
             kfree(write_data);
-			//mutex_unlock(&char_dev->lock);
+			mutex_unlock(&char_dev->lock);
             return retval;
         }
     }
@@ -276,6 +274,8 @@ ssize_t aesd_write(struct file *filp, const char __user *buf, size_t count, loff
         // Add the new entry to the circular buffer.
         aesd_circular_buffer_add_entry(&char_dev->buffer, &add_entry);
 
+        char_dev->buff_size += add_entry.size; //Updating the concatenated circular buffer length
+
         char_dev->write_buffer_size = 0;
     }
 
@@ -309,7 +309,7 @@ loff_t aesd_llseek(struct file *file, loff_t offset, int whence)
 	}
 
 	// Call the fixed_size_llseek function to perform the seek operation
-	retval = fixed_size_llseek(file, offset, whence, char_dev->write_buffer_size);
+	retval = fixed_size_llseek(file, offset, whence, char_dev->buff_size);
 
 	// Check for errors returned by fixed_size_llseek
 	if (retval < 0) {
@@ -363,6 +363,7 @@ static long aesd_adjust_file_offset(struct file *filp, unsigned int write_cmd, u
 
 	// Update the file pointer with the new located offset
 	filp->f_pos = updated_fpos_offset + write_cmd_offset;
+    goto unlock; //What if this was commented?
 
 unlock:
 	// Unlock the mutex before returning

@@ -556,7 +556,7 @@ int accept_and_log_client(char *ip_address)
  * @brief Function to handle both receiving and sending data through a client socket.
  * 
  * This function does the following:
- * 1. Receives data from the client and writes it to the file /dev/aesdchar
+ * 1. Receives data from the client and writes it to the file /dev/aesdchar.
  * 2. Reads the content from the same file and sends it back to the client.
  * 
  * @param thread_param Pointer to the thread data structure
@@ -565,7 +565,7 @@ int accept_and_log_client(char *ip_address)
 void* client_data_handler(void *thread_param)
 {
     int result;
-    int is_ioctl = 1;
+    int ioctl_check;
     // variables for receiving data
     ssize_t bytes_received = 0;
     char receive_buffer[BUF_LEN];
@@ -600,9 +600,10 @@ void* client_data_handler(void *thread_param)
             return NULL;
         }
 
-        is_ioctl = strncmp(receive_buffer, ioctl_str, strlen(ioctl_str));
+        // Check if the received string starts with "AESDCHAR_IOCSEEKTO:"
+        ioctl_check = strncmp(receive_buffer, ioctl_str, strlen(ioctl_str));
         
-        if (is_ioctl == 0)
+        if (ioctl_check == 0)
         {
             struct aesd_seekto aesd_seekto_data;
             sscanf(receive_buffer, "AESDCHAR_IOCSEEKTO:%d,%d", &aesd_seekto_data.write_cmd, &aesd_seekto_data.write_cmd_offset); 
@@ -618,16 +619,22 @@ void* client_data_handler(void *thread_param)
         
             if(ioctl(dataFileDescriptor, AESDCHAR_IOCSEEKTO, &aesd_seekto_data) != 0)
             {
-            syslog(LOG_ERR,"ioctl failed");
+                perror("ioctl failed");
+                syslog(LOG_ERR,"ioctl failed");
             }
+
+            // No need to close the file descriptor here as it will be reused for reading.
         }
-        else{
+        else
+        {
+            // Open the file in write mode
             dataFileDescriptor = open(DATA_FILE, O_RDWR | O_CREAT | O_APPEND, S_IWUSR | S_IRUSR | S_IWGRP | S_IRGRP | S_IROTH);
-                if (ERROR == dataFileDescriptor)
-                {
-                        perror("File open");
-                        syslog(LOG_ERR, "File Open");
-                }
+            if (ERROR == dataFileDescriptor)
+            {
+                perror("File open");
+                syslog(LOG_ERR, "File Open");
+            }
+
             // Lock mutex to protect file
             result = pthread_mutex_lock(thread_data_ptr->pMutex);
             if (result == ERROR)
@@ -635,27 +642,34 @@ void* client_data_handler(void *thread_param)
                 syslog(LOG_ERR, "Failed to acquire mutex");
                 return NULL;
             }
+
+            // Write received data to the file
             result = write(dataFileDescriptor, receive_buffer, bytes_received);
             if (result == ERROR)
             {
                 syslog(LOG_ERR, "Unsuccessful file write operation");
                 return NULL;
             }
+
             // Unlock mutex
             result = pthread_mutex_unlock(thread_data_ptr->pMutex);
             if (result == ERROR)
             {
-            syslog(LOG_ERR, "Failed to release mutex");
-            return NULL;
+                syslog(LOG_ERR, "Failed to release mutex");
+                return NULL;
             }
+
+            // Close the file descriptor after writing
             close(dataFileDescriptor);
         }
+
         // Update the condition variable
         newline_found = memchr(receive_buffer, '\n', bytes_received);
     }
 
-    if(is_ioctl != 0)
+    if(ioctl_check != 0)
     {
+        // Open the file in read-only mode
         dataFileDescriptor = open(DATA_FILE, O_RDONLY, 0444);
         if (ERROR == dataFileDescriptor)
         {
@@ -668,6 +682,7 @@ void* client_data_handler(void *thread_param)
 
 #ifndef USE_AESD_CHAR_DEVICE
 
+    // Seek to the beginning of the file (if not using AESD_CHAR_DEVICE)
     off_t seek_result = lseek(dataFileDescriptor, 0, SEEK_SET);
     if (seek_result == ERROR)
     {
@@ -688,6 +703,7 @@ void* client_data_handler(void *thread_param)
             return NULL;
         }
 
+        // Read data from the file
         bytes_from_file = read(dataFileDescriptor, send_buffer, BUF_LEN);
         if (bytes_from_file == ERROR)
         {
@@ -703,6 +719,7 @@ void* client_data_handler(void *thread_param)
             return NULL;
         }
 
+        // Send the read data back to the client
         bytes_sent = send(thread_data_ptr->clientSocketFd, send_buffer, bytes_from_file, 0);
         if (bytes_sent == ERROR)
         {  
@@ -711,14 +728,19 @@ void* client_data_handler(void *thread_param)
         }
     }
 
+    // Close the client socket and log the termination of the connection
     close(thread_data_ptr->clientSocketFd);
     syslog(LOG_INFO, "Terminated connection: %s", s);
 
+    // Set the thread completion status to true
     thread_data_ptr->isThreadComplete = true;
 
-    //close(dataFileDescriptor);
+    // Close the data file descriptor
+    close(dataFileDescriptor);
+
     return thread_param;
 }
+
 #ifndef USE_AESD_CHAR_DEVICE
 /**
  * @brief Initializes the timestamp structure and creates a thread for logging timestamps.

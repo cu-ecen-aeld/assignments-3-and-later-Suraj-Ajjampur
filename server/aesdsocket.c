@@ -9,7 +9,8 @@
  *
  * @reference
  *
- * https://www.thegeekstuff.com/2012/02/c-daemon-process/ 
+ * 1. https://www.thegeekstuff.com/2012/02/c-daemon-process/ 
+ * 2. https://beej.us/guide/bgnet/html/
  ************************************************************************/
 /****************   Includes    ***************/ 
 #include "aesdsocket.h"
@@ -22,7 +23,7 @@
 #else
 	#define DATA_FILE "/var/tmp/aesdsocketdata"
 #endif
-
+const char *ioctl_str = "AESDCHAR_IOCSEEKTO:";
 /****************   Global Variables     ***************/ 
 sig_atomic_t fatal_error_in_progress = 0;
 
@@ -551,12 +552,11 @@ int accept_and_log_client(char *ip_address)
     return SUCCESS;
 }
 
-
 /**
  * @brief Function to handle both receiving and sending data through a client socket.
  * 
  * This function does the following:
- * 1. Receives data from the client and writes it to the file /var/tmp/aesdsocketdata
+ * 1. Receives data from the client and writes it to the file /dev/aesdchar
  * 2. Reads the content from the same file and sends it back to the client.
  * 
  * @param thread_param Pointer to the thread data structure
@@ -565,6 +565,7 @@ int accept_and_log_client(char *ip_address)
 void* client_data_handler(void *thread_param)
 {
     int result;
+    int is_ioctl = 1;
     // variables for receiving data
     ssize_t bytes_received = 0;
     char receive_buffer[BUF_LEN];
@@ -583,24 +584,8 @@ void* client_data_handler(void *thread_param)
               get_in_addr((struct sockaddr *)&(thread_data_ptr->pClientAddr)),
               s, sizeof s);
     
-    dataFileDescriptor = open(DATA_FILE, O_RDWR | O_APPEND | O_CREAT, 0644);
-        if (ERROR == dataFileDescriptor)
-        {
-                perror("File open");
-                syslog(LOG_ERR, "File Open");
-        }
     syslog(LOG_INFO, "New connection established: %s", s);
-
-
     syslog(LOG_INFO, "Thread %ld initialized", thread_data_ptr->threadId);
-
-    // Lock mutex to protect file
-    result = pthread_mutex_lock(thread_data_ptr->pMutex);
-    if (result == ERROR)
-    {
-        syslog(LOG_ERR, "Failed to acquire mutex");
-        return NULL;
-    }
 
     // Initialize the condition variable
     void *newline_found = NULL;
@@ -615,34 +600,72 @@ void* client_data_handler(void *thread_param)
             return NULL;
         }
 
-        result = write(dataFileDescriptor, receive_buffer, bytes_received);
-        if (result == ERROR)
+        is_ioctl = strncmp(receive_buffer, ioctl_str, strlen(ioctl_str));
+        
+        if (is_ioctl == 0)
         {
-            syslog(LOG_ERR, "Unsuccessful file write operation");
+            struct aesd_seekto aesd_seekto_data;
+            sscanf(receive_buffer, "AESDCHAR_IOCSEEKTO:%d,%d", &aesd_seekto_data.write_cmd, &aesd_seekto_data.write_cmd_offset); 
+            
+            dataFileDescriptor = open(DATA_FILE, O_RDWR | O_CREAT | O_APPEND, S_IWUSR | S_IRUSR | S_IWGRP | S_IRGRP | S_IROTH);
+            if(dataFileDescriptor == ERROR)
+            {
+                syslog(LOG_ERR,"Data file open failed");
+                DEBUG_LOG("Application Failure\n");
+                DEBUG_LOG("Check logs\n");
+                return NULL;
+            }
+        
+            if(ioctl(dataFileDescriptor, AESDCHAR_IOCSEEKTO, &aesd_seekto_data) != 0)
+            {
+            syslog(LOG_ERR,"ioctl failed");
+            }
+        }
+        else{
+            dataFileDescriptor = open(DATA_FILE, O_RDWR | O_CREAT | O_APPEND, S_IWUSR | S_IRUSR | S_IWGRP | S_IRGRP | S_IROTH);
+                if (ERROR == dataFileDescriptor)
+                {
+                        perror("File open");
+                        syslog(LOG_ERR, "File Open");
+                }
+            // Lock mutex to protect file
+            result = pthread_mutex_lock(thread_data_ptr->pMutex);
+            if (result == ERROR)
+            {
+                syslog(LOG_ERR, "Failed to acquire mutex");
+                return NULL;
+            }
+            result = write(dataFileDescriptor, receive_buffer, bytes_received);
+            if (result == ERROR)
+            {
+                syslog(LOG_ERR, "Unsuccessful file write operation");
+                return NULL;
+            }
+            // Unlock mutex
+            result = pthread_mutex_unlock(thread_data_ptr->pMutex);
+            if (result == ERROR)
+            {
+            syslog(LOG_ERR, "Failed to release mutex");
             return NULL;
+            }
+            close(dataFileDescriptor);
         }
-
-        // Unlock mutex
-        result = pthread_mutex_unlock(thread_data_ptr->pMutex);
-        if (result == ERROR)
-        {
-        syslog(LOG_ERR, "Failed to release mutex");
-        return NULL;
-
-        }
-
         // Update the condition variable
         newline_found = memchr(receive_buffer, '\n', bytes_received);
     }
-    close(dataFileDescriptor);
 
-    // Lock mutex to protect file
-    result = pthread_mutex_lock(thread_data_ptr->pMutex);
-    if (result == ERROR)
+    if(is_ioctl != 0)
     {
-        syslog(LOG_ERR, "Failed to acquire mutex");
-        return NULL;
+        dataFileDescriptor = open(DATA_FILE, O_RDONLY, 0444);
+        if (ERROR == dataFileDescriptor)
+        {
+            syslog(LOG_ERR,"Data file open failed");
+            DEBUG_LOG("Application Failure\n");
+            DEBUG_LOG("Check logs\n");
+            return NULL;
+        }
     }
+
 #ifndef USE_AESD_CHAR_DEVICE
 
     off_t seek_result = lseek(dataFileDescriptor, 0, SEEK_SET);
@@ -654,17 +677,17 @@ void* client_data_handler(void *thread_param)
 
 #endif
 
-	// Open fd for read mode
-	dataFileDescriptor = open(DATA_FILE, O_RDONLY, 0444);
-    if (ERROR == dataFileDescriptor)
-    {
-        perror("File open");
-        syslog(LOG_ERR, "File Open");
-    }
-
     // Loop as long as bytes_from_file is greater than 0
     while (bytes_from_file > 0)
     {
+        // Lock mutex to protect file
+        result = pthread_mutex_lock(thread_data_ptr->pMutex);
+        if (result == ERROR)
+        {
+            syslog(LOG_ERR, "Failed to acquire mutex");
+            return NULL;
+        }
+
         bytes_from_file = read(dataFileDescriptor, send_buffer, BUF_LEN);
         if (bytes_from_file == ERROR)
         {
@@ -672,33 +695,28 @@ void* client_data_handler(void *thread_param)
             return NULL;
         }
 
-        // Check to avoid sending when read returns 0 (EOF)
-        if (bytes_from_file > 0)
+        // Unlock mutex
+        result = pthread_mutex_unlock(thread_data_ptr->pMutex);
+        if (result == ERROR)
         {
-            bytes_sent = send(thread_data_ptr->clientSocketFd, send_buffer, bytes_from_file, 0);
-            if (bytes_sent == ERROR)
-            {
-                syslog(LOG_ERR, "Data transmission unsuccessful");
-                return NULL;
-            }
+            syslog(LOG_ERR, "Failed to release mutex");
+            return NULL;
+        }
 
-            // Unlock mutex
-            result = pthread_mutex_unlock(thread_data_ptr->pMutex);
-            if (result == ERROR)
-            {
-                syslog(LOG_ERR, "Failed to release mutex");
-                return NULL;
-            }
+        bytes_sent = send(thread_data_ptr->clientSocketFd, send_buffer, bytes_from_file, 0);
+        if (bytes_sent == ERROR)
+        {  
+            syslog(LOG_ERR, "Data transmission unsuccessful");
+            return NULL;
         }
     }
-
 
     close(thread_data_ptr->clientSocketFd);
     syslog(LOG_INFO, "Terminated connection: %s", s);
 
     thread_data_ptr->isThreadComplete = true;
 
-    close(dataFileDescriptor);
+    //close(dataFileDescriptor);
     return thread_param;
 }
 #ifndef USE_AESD_CHAR_DEVICE

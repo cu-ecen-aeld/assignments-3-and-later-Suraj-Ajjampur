@@ -310,11 +310,12 @@ loff_t aesd_llseek(struct file *file, loff_t offset, int whence)
 
 	// Call the fixed_size_llseek function to perform the seek operation
 	retval = fixed_size_llseek(file, offset, whence, char_dev->buff_size);
-
 	// Check for errors returned by fixed_size_llseek
 	if (retval < 0) {
 		goto unlock;
 	}
+
+    goto unlock;
 
 unlock:
 	// Unlock the mutex before returning (including in case of errors)
@@ -363,7 +364,7 @@ static long aesd_adjust_file_offset(struct file *filp, unsigned int write_cmd, u
 
 	// Update the file pointer with the new located offset
 	filp->f_pos = updated_fpos_offset + write_cmd_offset;
-    goto unlock; //What if this was commented?
+    goto unlock; 
 
 unlock:
 	// Unlock the mutex before returning
@@ -413,8 +414,7 @@ long aesd_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 				// Check if the seek parameters are out of range
 				if (retval == -EINVAL)
 				{
-					//retval = -EINVAL; // Return code for invalid seek parameters
-					    PDEBUG("Invalid seek parameters\n"); // Additional error handling or logging can be added here if needed
+				    PDEBUG("Invalid seek parameters\n"); // Additional error handling or logging can be added here if needed
 				}
 			}
 			break;

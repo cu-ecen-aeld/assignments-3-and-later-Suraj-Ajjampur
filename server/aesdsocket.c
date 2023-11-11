@@ -606,7 +606,15 @@ void* client_data_handler(void *thread_param)
         if (ioctl_check == 0)
         {
             struct aesd_seekto aesd_seekto_data;
-            sscanf(receive_buffer, "AESDCHAR_IOCSEEKTO:%d,%d", &aesd_seekto_data.write_cmd, &aesd_seekto_data.write_cmd_offset); 
+            int sscanf_result = sscanf(receive_buffer, "AESDCHAR_IOCSEEKTO:%d,%d", &aesd_seekto_data.write_cmd, &aesd_seekto_data.write_cmd_offset);
+
+            if (sscanf_result != 2) // Expecting 2 items to be read
+            {
+                syslog(LOG_ERR, "sscanf failed to read the required number of items from receive_buffer");
+                DEBUG_LOG("sscanf failure\n");
+                // Handle the error, maybe return or continue based on your application's requirements
+                return NULL; // or continue; or any other error handling as per your application logic
+            }
             
             dataFileDescriptor = open(DATA_FILE, O_RDWR | O_CREAT | O_APPEND, S_IWUSR | S_IRUSR | S_IWGRP | S_IRGRP | S_IROTH);
             if(dataFileDescriptor == ERROR)

@@ -24,6 +24,7 @@
 #include <pthread.h>
 #include <sys/queue.h>
 #include <time.h>
+#include "../aesd-char-driver/aesd_ioctl.h"
 
 /****************   Macros     ***************/ 
 

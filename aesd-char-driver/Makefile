@@ -2,6 +2,7 @@
 # Comment/uncomment the following line to disable/enable debugging
 DEBUG = y
 
+
 # Add your debugging flag (or not) to CFLAGS
 ifeq ($(DEBUG),y)
   DEBFLAGS = -O -g -DSCULL_DEBUG # "-O" is needed to expand inlines
@@ -23,6 +24,7 @@ PWD       := $(shell pwd)
 modules:
 	$(MAKE) -C $(KERNELDIR) M=$(PWD) modules
 	chmod +x *.ko
+
 endif
 
 clean:

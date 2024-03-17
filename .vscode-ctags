@@ -1,0 +1,247 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_OUTPUT_MODE	u-ctags	/u-ctags or e-ctags/
+!_TAG_PROGRAM_AUTHOR	Universal Ctags Team	//
+!_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
+!_TAG_PROGRAM_URL	https://ctags.io/	/official site/
+!_TAG_PROGRAM_VERSION	0.0.0	//
+$(EXEC)	server/Makefile	/^$(EXEC): $(SRCS)$/;"	t
+$(TARGET)	examples/autotest-validate/Makefile	/^$(TARGET) : $(OBJS)$/;"	t
+AESDCHAR_MAX_WRITE_OPERATIONS_SUPPORTED	aesd-char-driver/aesd-circular-buffer.h	/^#define AESDCHAR_MAX_WRITE_OPERATIONS_SUPPORTED /;"	d
+AESDSOCKET_H	server/aesdsocket.h	/^#define AESDSOCKET_H$/;"	d
+AESD_CHAR_DRIVER_AESDCHAR_H_	aesd-char-driver/aesdchar.h	/^#define AESD_CHAR_DRIVER_AESDCHAR_H_$/;"	d
+AESD_CIRCULAR_BUFFER_FOREACH	aesd-char-driver/aesd-circular-buffer.h	/^#define AESD_CIRCULAR_BUFFER_FOREACH(/;"	d
+AESD_CIRCULAR_BUFFER_H	aesd-char-driver/aesd-circular-buffer.h	/^#define AESD_CIRCULAR_BUFFER_H$/;"	d
+AESD_DEBUG	aesd-char-driver/aesdchar.h	/^#define AESD_DEBUG /;"	d
+ARCHITECTURE_ID	build/CMakeFiles/3.16.3/CompilerIdC/CMakeCCompilerId.c	/^#   define ARCHITECTURE_ID /;"	d	file:
+ARCHITECTURE_ID	build/CMakeFiles/3.16.3/CompilerIdC/CMakeCCompilerId.c	/^#  define ARCHITECTURE_ID /;"	d	file:
+ARCHITECTURE_ID	build/CMakeFiles/3.16.3/CompilerIdC/CMakeCCompilerId.c	/^#  define ARCHITECTURE_ID$/;"	d	file:
+ARCHITECTURE_ID	build/CMakeFiles/3.16.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#   define ARCHITECTURE_ID /;"	d	file:
+ARCHITECTURE_ID	build/CMakeFiles/3.16.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define ARCHITECTURE_ID /;"	d	file:
+ARCHITECTURE_ID	build/CMakeFiles/3.16.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define ARCHITECTURE_ID$/;"	d	file:
+BACKLOG_CONNECTIONS	server/aesdsocket.h	/^#define BACKLOG_CONNECTIONS	/;"	d
+BUF_LEN	server/aesdsocket.h	/^#define BUF_LEN	/;"	d
+CC	finder-app/Makefile	/^CC=$(CROSS_COMPILE)gcc$/;"	m
+CC	server/Makefile	/^CC ?= $(CROSS_COMPILE)gcc$/;"	m
+CFLAGS	server/Makefile	/^CFLAGS ?= -Wall -Werror -g$/;"	m
+COMPILER_ID	build/CMakeFiles/3.16.3/CompilerIdC/CMakeCCompilerId.c	/^# define COMPILER_ID /;"	d	file:
+COMPILER_ID	build/CMakeFiles/3.16.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^# define COMPILER_ID /;"	d	file:
+COMPILER_VERSION_INTERNAL	build/CMakeFiles/3.16.3/CompilerIdC/CMakeCCompilerId.c	/^#  define COMPILER_VERSION_INTERNAL /;"	d	file:
+COMPILER_VERSION_INTERNAL	build/CMakeFiles/3.16.3/CompilerIdC/CMakeCCompilerId.c	/^# define COMPILER_VERSION_INTERNAL /;"	d	file:
+COMPILER_VERSION_INTERNAL	build/CMakeFiles/3.16.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define COMPILER_VERSION_INTERNAL /;"	d	file:
+COMPILER_VERSION_INTERNAL	build/CMakeFiles/3.16.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^# define COMPILER_VERSION_INTERNAL /;"	d	file:
+COMPILER_VERSION_MAJOR	build/CMakeFiles/3.16.3/CompilerIdC/CMakeCCompilerId.c	/^  # define COMPILER_VERSION_MAJOR /;"	d	file:
+COMPILER_VERSION_MAJOR	build/CMakeFiles/3.16.3/CompilerIdC/CMakeCCompilerId.c	/^#  define COMPILER_VERSION_MAJOR /;"	d	file:
+COMPILER_VERSION_MAJOR	build/CMakeFiles/3.16.3/CompilerIdC/CMakeCCompilerId.c	/^# define COMPILER_VERSION_MAJOR /;"	d	file:
+COMPILER_VERSION_MAJOR	build/CMakeFiles/3.16.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^  # define COMPILER_VERSION_MAJOR /;"	d	file:
+COMPILER_VERSION_MAJOR	build/CMakeFiles/3.16.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define COMPILER_VERSION_MAJOR /;"	d	file:
+COMPILER_VERSION_MAJOR	build/CMakeFiles/3.16.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^# define COMPILER_VERSION_MAJOR /;"	d	file:
+COMPILER_VERSION_MINOR	build/CMakeFiles/3.16.3/CompilerIdC/CMakeCCompilerId.c	/^  # define COMPILER_VERSION_MINOR /;"	d	file:
+COMPILER_VERSION_MINOR	build/CMakeFiles/3.16.3/CompilerIdC/CMakeCCompilerId.c	/^#  define COMPILER_VERSION_MINOR /;"	d	file:
+COMPILER_VERSION_MINOR	build/CMakeFiles/3.16.3/CompilerIdC/CMakeCCompilerId.c	/^# define COMPILER_VERSION_MINOR /;"	d	file:
+COMPILER_VERSION_MINOR	build/CMakeFiles/3.16.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^  # define COMPILER_VERSION_MINOR /;"	d	file:
+COMPILER_VERSION_MINOR	build/CMakeFiles/3.16.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define COMPILER_VERSION_MINOR /;"	d	file:
+COMPILER_VERSION_MINOR	build/CMakeFiles/3.16.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^# define COMPILER_VERSION_MINOR /;"	d	file:
+COMPILER_VERSION_PATCH	build/CMakeFiles/3.16.3/CompilerIdC/CMakeCCompilerId.c	/^  # define COMPILER_VERSION_PATCH /;"	d	file:
+COMPILER_VERSION_PATCH	build/CMakeFiles/3.16.3/CompilerIdC/CMakeCCompilerId.c	/^#   define COMPILER_VERSION_PATCH /;"	d	file:
+COMPILER_VERSION_PATCH	build/CMakeFiles/3.16.3/CompilerIdC/CMakeCCompilerId.c	/^#  define COMPILER_VERSION_PATCH /;"	d	file:
+COMPILER_VERSION_PATCH	build/CMakeFiles/3.16.3/CompilerIdC/CMakeCCompilerId.c	/^# define COMPILER_VERSION_PATCH /;"	d	file:
+COMPILER_VERSION_PATCH	build/CMakeFiles/3.16.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^  # define COMPILER_VERSION_PATCH /;"	d	file:
+COMPILER_VERSION_PATCH	build/CMakeFiles/3.16.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#   define COMPILER_VERSION_PATCH /;"	d	file:
+COMPILER_VERSION_PATCH	build/CMakeFiles/3.16.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define COMPILER_VERSION_PATCH /;"	d	file:
+COMPILER_VERSION_PATCH	build/CMakeFiles/3.16.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^# define COMPILER_VERSION_PATCH /;"	d	file:
+COMPILER_VERSION_TWEAK	build/CMakeFiles/3.16.3/CompilerIdC/CMakeCCompilerId.c	/^#  define COMPILER_VERSION_TWEAK /;"	d	file:
+COMPILER_VERSION_TWEAK	build/CMakeFiles/3.16.3/CompilerIdC/CMakeCCompilerId.c	/^# define COMPILER_VERSION_TWEAK /;"	d	file:
+COMPILER_VERSION_TWEAK	build/CMakeFiles/3.16.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define COMPILER_VERSION_TWEAK /;"	d	file:
+COMPILER_VERSION_TWEAK	build/CMakeFiles/3.16.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^# define COMPILER_VERSION_TWEAK /;"	d	file:
+CXX_STD	build/CMakeFiles/3.16.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#      define CXX_STD /;"	d	file:
+CXX_STD	build/CMakeFiles/3.16.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#    define CXX_STD /;"	d	file:
+CXX_STD	build/CMakeFiles/3.16.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define CXX_STD /;"	d	file:
+C_DIALECT	build/CMakeFiles/3.16.3/CompilerIdC/CMakeCCompilerId.c	/^#  define C_DIALECT /;"	d	file:
+C_DIALECT	build/CMakeFiles/3.16.3/CompilerIdC/CMakeCCompilerId.c	/^#  define C_DIALECT$/;"	d	file:
+C_DIALECT	build/CMakeFiles/3.16.3/CompilerIdC/CMakeCCompilerId.c	/^# define C_DIALECT /;"	d	file:
+ClientThreadData_t	server/aesdsocket.h	/^} ClientThreadData_t;$/;"	t	typeref:struct:__anone61a90670208
+DATA_FILE	server/aesdsocket.c	/^	#define DATA_FILE /;"	d	file:
+DEBFLAGS	aesd-char-driver/Makefile	/^  DEBFLAGS = -O -g -DSCULL_DEBUG # "-O" is needed to expand inlines$/;"	m
+DEBFLAGS	aesd-char-driver/Makefile	/^  DEBFLAGS = -O2$/;"	m
+DEBUG	aesd-char-driver/Makefile	/^DEBUG = y$/;"	m
+DEBUG_LOG	examples/threading/threading.c	/^#define DEBUG_LOG(/;"	d	file:
+DEBUG_LOG	server/aesdsocket.h	/^#define DEBUG_LOG(/;"	d
+DEC	build/CMakeFiles/3.16.3/CompilerIdC/CMakeCCompilerId.c	/^#define DEC(/;"	d	file:
+DEC	build/CMakeFiles/3.16.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#define DEC(/;"	d	file:
+ERROR	server/aesdsocket.h	/^#define ERROR /;"	d
+ERROR_LOG	examples/threading/threading.c	/^#define ERROR_LOG(/;"	d	file:
+ERROR_LOG	server/aesdsocket.h	/^#define ERROR_LOG(/;"	d
+EXEC	server/Makefile	/^EXEC = aesdsocket$/;"	m
+HEX	build/CMakeFiles/3.16.3/CompilerIdC/CMakeCCompilerId.c	/^#define HEX(/;"	d	file:
+HEX	build/CMakeFiles/3.16.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#define HEX(/;"	d	file:
+ID_VOID_MAIN	build/CMakeFiles/3.16.3/CompilerIdC/CMakeCCompilerId.c	/^# define ID_VOID_MAIN$/;"	d	file:
+KERNELDIR	aesd-char-driver/Makefile	/^KERNELDIR ?= \/lib\/modules\/$(shell uname -r)\/build$/;"	m
+LDFLAGS	server/Makefile	/^LDFLAGS ?= -pthread -lrt$/;"	m
+OBJS	examples/autotest-validate/Makefile	/^OBJS := $(SRC:.c=.o)$/;"	m
+PDEBUG	aesd-char-driver/aesdchar.h	/^#    define PDEBUG(/;"	d
+PLATFORM_ID	build/CMakeFiles/3.16.3/CompilerIdC/CMakeCCompilerId.c	/^#  define PLATFORM_ID /;"	d	file:
+PLATFORM_ID	build/CMakeFiles/3.16.3/CompilerIdC/CMakeCCompilerId.c	/^#  define PLATFORM_ID$/;"	d	file:
+PLATFORM_ID	build/CMakeFiles/3.16.3/CompilerIdC/CMakeCCompilerId.c	/^# define PLATFORM_ID /;"	d	file:
+PLATFORM_ID	build/CMakeFiles/3.16.3/CompilerIdC/CMakeCCompilerId.c	/^# define PLATFORM_ID$/;"	d	file:
+PLATFORM_ID	build/CMakeFiles/3.16.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define PLATFORM_ID /;"	d	file:
+PLATFORM_ID	build/CMakeFiles/3.16.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define PLATFORM_ID$/;"	d	file:
+PLATFORM_ID	build/CMakeFiles/3.16.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^# define PLATFORM_ID /;"	d	file:
+PLATFORM_ID	build/CMakeFiles/3.16.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^# define PLATFORM_ID$/;"	d	file:
+PWD	aesd-char-driver/Makefile	/^PWD       := $(shell pwd)$/;"	m
+SIMULATE_ID	build/CMakeFiles/3.16.3/CompilerIdC/CMakeCCompilerId.c	/^#  define SIMULATE_ID /;"	d	file:
+SIMULATE_ID	build/CMakeFiles/3.16.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define SIMULATE_ID /;"	d	file:
+SIMULATE_VERSION_MAJOR	build/CMakeFiles/3.16.3/CompilerIdC/CMakeCCompilerId.c	/^#  define SIMULATE_VERSION_MAJOR /;"	d	file:
+SIMULATE_VERSION_MAJOR	build/CMakeFiles/3.16.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define SIMULATE_VERSION_MAJOR /;"	d	file:
+SIMULATE_VERSION_MINOR	build/CMakeFiles/3.16.3/CompilerIdC/CMakeCCompilerId.c	/^#  define SIMULATE_VERSION_MINOR /;"	d	file:
+SIMULATE_VERSION_MINOR	build/CMakeFiles/3.16.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define SIMULATE_VERSION_MINOR /;"	d	file:
+SIMULATE_VERSION_PATCH	build/CMakeFiles/3.16.3/CompilerIdC/CMakeCCompilerId.c	/^#  define SIMULATE_VERSION_PATCH /;"	d	file:
+SIMULATE_VERSION_PATCH	build/CMakeFiles/3.16.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define SIMULATE_VERSION_PATCH /;"	d	file:
+SRC	examples/autotest-validate/Makefile	/^SRC := autotest-validate.c autotest-validate-main.c$/;"	m
+SRCS	server/Makefile	/^SRCS = aesdsocket.c$/;"	m
+STRINGIFY	build/CMakeFiles/3.16.3/CompilerIdC/CMakeCCompilerId.c	/^#define STRINGIFY(/;"	d	file:
+STRINGIFY	build/CMakeFiles/3.16.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#define STRINGIFY(/;"	d	file:
+STRINGIFY_HELPER	build/CMakeFiles/3.16.3/CompilerIdC/CMakeCCompilerId.c	/^#define STRINGIFY_HELPER(/;"	d	file:
+STRINGIFY_HELPER	build/CMakeFiles/3.16.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#define STRINGIFY_HELPER(/;"	d	file:
+SUCCESS	server/aesdsocket.h	/^#define SUCCESS /;"	d
+S_IRWXG	finder-app/writer.c	/^#define S_IRWXG /;"	d	file:
+S_IRWXO	finder-app/writer.c	/^#define S_IRWXO /;"	d	file:
+S_IRWXU	finder-app/writer.c	/^#define S_IRWXU /;"	d	file:
+TARGET	examples/autotest-validate/Makefile	/^TARGET = autotest-validate$/;"	m
+TIMESTAMP_STRING_LENGTH	server/aesdsocket.h	/^#define TIMESTAMP_STRING_LENGTH /;"	d
+TS_data	server/aesdsocket.c	/^ThreadTimestampData_t TS_data;$/;"	v	typeref:typename:ThreadTimestampData_t
+ThreadTimestampData_t	server/aesdsocket.h	/^} ThreadTimestampData_t;$/;"	t	typeref:struct:__anone61a90670308
+USE_AESD_CHAR_DEVICE	server/aesdsocket.c	/^#define USE_AESD_CHAR_DEVICE$/;"	d	file:
+__anone61a90670108	server/aesdsocket.h	/^{$/;"	s
+__anone61a90670208	server/aesdsocket.h	/^{$/;"	s
+__anone61a90670308	server/aesdsocket.h	/^{$/;"	s
+accept_and_log_client	server/aesdsocket.c	/^int accept_and_log_client(char *ip_address)$/;"	f	typeref:typename:int
+aesd_buffer_entry	aesd-char-driver/aesd-circular-buffer.h	/^struct aesd_buffer_entry$/;"	s
+aesd_circular_buffer	aesd-char-driver/aesd-circular-buffer.h	/^struct aesd_circular_buffer$/;"	s
+aesd_circular_buffer_add_entry	aesd-char-driver/aesd-circular-buffer.c	/^void aesd_circular_buffer_add_entry(struct aesd_circular_buffer *buffer, const struct aesd_buffe/;"	f	typeref:typename:void
+aesd_circular_buffer_find_entry_offset_for_fpos	aesd-char-driver/aesd-circular-buffer.c	/^struct aesd_buffer_entry *aesd_circular_buffer_find_entry_offset_for_fpos(struct aesd_circular_b/;"	f	typeref:struct:aesd_buffer_entry *
+aesd_dev	aesd-char-driver/aesdchar.h	/^struct aesd_dev$/;"	s
+aesd_device	aesd-char-driver/main.c	/^struct aesd_dev aesd_device;$/;"	v	typeref:struct:aesd_dev
+aesd_fops	aesd-char-driver/main.c	/^struct file_operations aesd_fops = {$/;"	v	typeref:struct:file_operations
+aesd_init_module	aesd-char-driver/main.c	/^int aesd_init_module(void)$/;"	f	typeref:typename:int
+aesd_minor	aesd-char-driver/main.c	/^int aesd_minor =   0;$/;"	v	typeref:typename:int
+aesd_release	aesd-char-driver/main.c	/^int aesd_release(struct inode *inode, struct file *filp)$/;"	f	typeref:typename:int
+aesd_write	aesd-char-driver/main.c	/^ssize_t aesd_write(struct file *filp, const char __user *buf, size_t count, loff_t *f_pos)$/;"	f	typeref:typename:ssize_t
+aesd_write	aesd-char-driver/main.c	/^ssize_t aesd_write(struct file *filp, const char __user *buf, size_t count,$/;"	f	typeref:typename:ssize_t
+aesdchar-y	aesd-char-driver/Makefile	/^aesdchar-y := aesd-circular-buffer.o main.o$/;"	m
+all	examples/autotest-validate/Makefile	/^all: $(TARGET)$/;"	t
+all	finder-app/Makefile	/^all: writer$/;"	t
+all	server/Makefile	/^all : $(EXEC)$/;"	t
+buffer	aesd-char-driver/aesdchar.h	/^    struct aesd_circular_buffer buffer;  \/*Circular buffer struct*\/$/;"	m	struct:aesd_dev	typeref:struct:aesd_circular_buffer
+buffptr	aesd-char-driver/aesd-circular-buffer.h	/^    const char *buffptr;$/;"	m	struct:aesd_buffer_entry	typeref:typename:const char *
+byte_offset	aesd-char-driver/main.c	/^	size_t byte_offset = 0;              \/\/byte offset to start the reading from$/;"	v	typeref:typename:size_t
+bytes_remaining	aesd-char-driver/main.c	/^		size_t bytes_remaining = new_entry->size - byte_offset;$/;"	v	typeref:typename:size_t
+cdev	aesd-char-driver/aesdchar.h	/^    struct cdev cdev;     \/* Char device structure      *\/$/;"	m	struct:aesd_dev	typeref:struct:cdev
+cdev	aesd-char-driver/aesdchar.h	/^    struct cdev cdev;     \/* Char device structure      *\/$/;"	v	typeref:struct:cdev
+char_dev	aesd-char-driver/main.c	/^	struct aesd_dev *char_dev = filp->private_data; \/\/Circular buffer structure member$/;"	v	typeref:struct:aesd_dev *
+clean	aesd-char-driver/Makefile	/^clean:$/;"	t
+clean	examples/autotest-validate/Makefile	/^clean:$/;"	t
+clean	finder-app/Makefile	/^clean:$/;"	t
+clean	server/Makefile	/^clean:$/;"	t
+cleanup_on_exit	server/aesdsocket.c	/^void cleanup_on_exit(void)$/;"	f	typeref:typename:void
+clientSocketFd	server/aesdsocket.c	/^int clientSocketFd;$/;"	v	typeref:typename:int
+clientSocketFd	server/aesdsocket.h	/^    int clientSocketFd;                     \/**< File descriptor for the client socket *\/$/;"	m	struct:__anone61a90670208	typeref:typename:int
+client_data_handler	server/aesdsocket.c	/^void* client_data_handler(void *thread_param)$/;"	f	typeref:typename:void *
+client_fd_open	server/aesdsocket.h	/^    bool client_fd_open;$/;"	m	struct:__anone61a90670108	typeref:typename:bool
+command_status_success	server/aesdsocket.h	/^    bool command_status_success;$/;"	m	struct:__anone61a90670108	typeref:typename:bool
+const	build/CMakeFiles/3.16.3/CompilerIdC/CMakeCCompilerId.c	/^# define const$/;"	d	file:
+daemon_mode	server/aesdsocket.c	/^bool daemon_mode = false;$/;"	v	typeref:typename:bool
+daemon_mode	server/aesdsocket.h	/^    bool daemon_mode;$/;"	m	struct:__anone61a90670108	typeref:typename:bool
+dataFileDescriptor	server/aesdsocket.c	/^int dataFileDescriptor;$/;"	v	typeref:typename:int
+default	server/Makefile	/^default : $(EXEC)$/;"	t
+dev	aesd-char-driver/main.c	/^    struct aesd_dev *dev = container_of(inode->i_cdev, struct aesd_dev, cdev);$/;"	v	typeref:struct:aesd_dev *
+devno	aesd-char-driver/main.c	/^    int err, devno = MKDEV(aesd_major, aesd_minor);$/;"	v	typeref:typename:int
+do_exec	examples/systemcalls/systemcalls.c	/^bool do_exec(int count, ...)$/;"	f	typeref:typename:bool
+do_exec_redirect	examples/systemcalls/systemcalls.c	/^bool do_exec_redirect(const char *outputfile, int count, ...)$/;"	f	typeref:typename:bool
+do_system	examples/systemcalls/systemcalls.c	/^bool do_system(const char *cmd) {$/;"	f	typeref:typename:bool
+entry	aesd-char-driver/aesd-circular-buffer.h	/^    struct aesd_buffer_entry  entry[AESDCHAR_MAX_WRITE_OPERATIONS_SUPPORTED];$/;"	m	struct:aesd_circular_buffer	typeref:struct:aesd_buffer_entry[]
+entry	aesd-char-driver/main.c	/^    struct aesd_buffer_entry *entry;$/;"	v	typeref:struct:aesd_buffer_entry *
+err	aesd-char-driver/main.c	/^    int err, devno = MKDEV(aesd_major, aesd_minor);$/;"	v	typeref:typename:int
+execute_command	examples/systemcalls/systemcalls.c	/^bool execute_command(char * command[], int redirect_fd)$/;"	f	typeref:typename:bool
+fatal_error_in_progress	server/aesdsocket.c	/^sig_atomic_t fatal_error_in_progress = 0;$/;"	v	typeref:typename:sig_atomic_t
+file_open	server/aesdsocket.h	/^    bool file_open;$/;"	m	struct:__anone61a90670108	typeref:typename:bool
+free_and_nullify_result	server/aesdsocket.c	/^void free_and_nullify_result() {$/;"	f	typeref:typename:void
+full	aesd-char-driver/aesd-circular-buffer.h	/^    bool full;$/;"	m	struct:aesd_circular_buffer	typeref:typename:bool
+get_in_addr	server/aesdsocket.c	/^void *get_in_addr(struct sockaddr *sa)$/;"	f	typeref:typename:void *
+git_username	examples/autotest-validate/autotest-validate-main.c	/^const char * git_username = "akshita-bhasin";$/;"	v	typeref:typename:const char *
+handle_termination	server/aesdsocket.c	/^void handle_termination(int sig)$/;"	f	typeref:typename:void
+in_offs	aesd-char-driver/aesd-circular-buffer.h	/^    uint8_t in_offs;$/;"	m	struct:aesd_circular_buffer	typeref:typename:uint8_t
+info_arch	build/CMakeFiles/3.16.3/CompilerIdC/CMakeCCompilerId.c	/^char const* info_arch = "INFO" ":" "arch[" ARCHITECTURE_ID "]";$/;"	v	typeref:typename:char const *
+info_arch	build/CMakeFiles/3.16.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const* info_arch = "INFO" ":" "arch[" ARCHITECTURE_ID "]";$/;"	v	typeref:typename:char const *
+info_compiler	build/CMakeFiles/3.16.3/CompilerIdC/CMakeCCompilerId.c	/^char const* info_compiler = "INFO" ":" "compiler[" COMPILER_ID "]";$/;"	v	typeref:typename:char const *
+info_compiler	build/CMakeFiles/3.16.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const* info_compiler = "INFO" ":" "compiler[" COMPILER_ID "]";$/;"	v	typeref:typename:char const *
+info_cray	build/CMakeFiles/3.16.3/CompilerIdC/CMakeCCompilerId.c	/^char const *info_cray = "INFO" ":" "compiler_wrapper[CrayPrgEnv]";$/;"	v	typeref:typename:char const *
+info_cray	build/CMakeFiles/3.16.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const *info_cray = "INFO" ":" "compiler_wrapper[CrayPrgEnv]";$/;"	v	typeref:typename:char const *
+info_language_dialect_default	build/CMakeFiles/3.16.3/CompilerIdC/CMakeCCompilerId.c	/^const char* info_language_dialect_default =$/;"	v	typeref:typename:const char *
+info_language_dialect_default	build/CMakeFiles/3.16.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^const char* info_language_dialect_default = "INFO" ":" "dialect_default["$/;"	v	typeref:typename:const char *
+info_platform	build/CMakeFiles/3.16.3/CompilerIdC/CMakeCCompilerId.c	/^char const* info_platform = "INFO" ":" "platform[" PLATFORM_ID "]";$/;"	v	typeref:typename:char const *
+info_platform	build/CMakeFiles/3.16.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const* info_platform = "INFO" ":" "platform[" PLATFORM_ID "]";$/;"	v	typeref:typename:char const *
+info_simulate	build/CMakeFiles/3.16.3/CompilerIdC/CMakeCCompilerId.c	/^char const* info_simulate = "INFO" ":" "simulate[" SIMULATE_ID "]";$/;"	v	typeref:typename:char const *
+info_simulate	build/CMakeFiles/3.16.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const* info_simulate = "INFO" ":" "simulate[" SIMULATE_ID "]";$/;"	v	typeref:typename:char const *
+info_simulate_version	build/CMakeFiles/3.16.3/CompilerIdC/CMakeCCompilerId.c	/^char const info_simulate_version[] = {$/;"	v	typeref:typename:char const[]
+info_simulate_version	build/CMakeFiles/3.16.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const info_simulate_version[] = {$/;"	v	typeref:typename:char const[]
+info_version	build/CMakeFiles/3.16.3/CompilerIdC/CMakeCCompilerId.c	/^char const info_version[] = {$/;"	v	typeref:typename:char const[]
+info_version	build/CMakeFiles/3.16.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const info_version[] = {$/;"	v	typeref:typename:char const[]
+info_version_internal	build/CMakeFiles/3.16.3/CompilerIdC/CMakeCCompilerId.c	/^char const info_version_internal[] = {$/;"	v	typeref:typename:char const[]
+info_version_internal	build/CMakeFiles/3.16.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const info_version_internal[] = {$/;"	v	typeref:typename:char const[]
+isThreadComplete	server/aesdsocket.h	/^    bool isThreadComplete;                  \/**< Flag to indicate if the thread has completed i/;"	m	struct:__anone61a90670208	typeref:typename:bool
+lock	aesd-char-driver/aesdchar.h	/^    struct mutex lock; \/* Locking primitive for the driver *\/$/;"	m	struct:aesd_dev	typeref:struct:mutex
+lock	server/aesdsocket.c	/^pthread_mutex_t lock;$/;"	v	typeref:typename:pthread_mutex_t
+log_open	server/aesdsocket.h	/^    bool log_open;$/;"	m	struct:__anone61a90670108	typeref:typename:bool
+log_timestamps	server/aesdsocket.c	/^void *log_timestamps(void *arg)$/;"	f	typeref:typename:void *
+main	build/CMakeFiles/3.16.3/CompilerIdC/CMakeCCompilerId.c	/^int main(argc, argv) int argc; char *argv[];$/;"	f
+main	build/CMakeFiles/3.16.3/CompilerIdC/CMakeCCompilerId.c	/^void main() {}$/;"	f	typeref:typename:void
+main	build/CMakeFiles/3.16.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^int main(int argc, char* argv[])$/;"	f	typeref:typename:int
+main	examples/autotest-validate/autotest-validate-main.c	/^int main(int argc, char**argv)$/;"	f	typeref:typename:int
+main	finder-app/writer.c	/^int main(int argc, char* argv[]){						\/*argc is the number of arguments and argv are the argum/;"	f	typeref:typename:int
+main	server/aesdsocket.c	/^int main(int argc, char *argv[])$/;"	f	typeref:typename:int
+main_socket_application	server/aesdsocket.c	/^void main_socket_application()$/;"	f	typeref:typename:void
+modules	aesd-char-driver/Makefile	/^modules:$/;"	t
+mutex	examples/threading/threading.h	/^    pthread_mutex_t *mutex;$/;"	m	struct:thread_data	typeref:typename:pthread_mutex_t *
+my_username	examples/autotest-validate/autotest-validate.c	/^const char *my_username()$/;"	f	typeref:typename:const char *
+new_entry	aesd-char-driver/main.c	/^	struct aesd_buffer_entry *new_entry; \/\/circular buffer member instance$/;"	v	typeref:struct:aesd_buffer_entry *
+node	server/aesdsocket.c	/^node_t * node = NULL;$/;"	v	typeref:typename:node_t *
+node	server/aesdsocket.h	/^typedef struct node$/;"	s
+node_t	server/aesdsocket.h	/^}node_t;$/;"	t	typeref:struct:node
+obj-m	aesd-char-driver/Makefile	/^obj-m	:= aesdchar.o$/;"	m
+out_offs	aesd-char-driver/aesd-circular-buffer.h	/^    uint8_t out_offs;$/;"	m	struct:aesd_circular_buffer	typeref:typename:uint8_t
+pClientAddr	server/aesdsocket.h	/^    struct sockaddr_storage *pClientAddr;   \/**< Pointer to client address information *\/$/;"	m	struct:__anone61a90670208	typeref:struct:sockaddr_storage *
+pMutex	server/aesdsocket.h	/^    pthread_mutex_t *pMutex;                \/**< Pointer to mutex for synchronization *\/$/;"	m	struct:__anone61a90670208	typeref:typename:pthread_mutex_t *
+pMutex	server/aesdsocket.h	/^    pthread_mutex_t *pMutex;     \/**< Pointer to mutex for synchronization *\/$/;"	m	struct:__anone61a90670308	typeref:typename:pthread_mutex_t *
+qnxnto	build/CMakeFiles/3.16.3/CompilerIdC/CMakeCCompilerId.c	/^char const* qnxnto = "INFO" ":" "qnxnto[]";$/;"	v	typeref:typename:char const *
+qnxnto	build/CMakeFiles/3.16.3/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const* qnxnto = "INFO" ":" "qnxnto[]";$/;"	v	typeref:typename:char const *
+result	server/aesdsocket.c	/^struct addrinfo *result;$/;"	v	typeref:struct:addrinfo *
+retval	aesd-char-driver/main.c	/^	ssize_t retval = 0;$/;"	v	typeref:typename:ssize_t
+retval	aesd-char-driver/main.c	/^    ssize_t retval = 0;$/;"	v	typeref:typename:ssize_t
+run_daemon	server/aesdsocket.c	/^int run_daemon(void)$/;"	f	typeref:typename:int
+s	server/aesdsocket.c	/^char s[INET6_ADDRSTRLEN];$/;"	v	typeref:typename:char[]
+s_flags	server/aesdsocket.c	/^status_flags s_flags = {false, false, false, false, false, false, false};$/;"	v	typeref:typename:status_flags
+setup_time_logging	server/aesdsocket.c	/^int setup_time_logging(void)$/;"	f	typeref:typename:int
+signal_caught	server/aesdsocket.h	/^    bool signal_caught;$/;"	m	struct:__anone61a90670108	typeref:typename:bool
+size	aesd-char-driver/aesd-circular-buffer.h	/^    size_t size;$/;"	m	struct:aesd_buffer_entry	typeref:typename:size_t
+sock_fd	server/aesdsocket.c	/^int sock_fd;$/;"	v	typeref:typename:int
+socket_open	server/aesdsocket.h	/^    bool socket_open;$/;"	m	struct:__anone61a90670108	typeref:typename:bool
+start_thread_obtaining_mutex	examples/threading/threading.c	/^bool start_thread_obtaining_mutex(pthread_t* thread, pthread_mutex_t* mutex, int wait_to_obtain_/;"	f	typeref:typename:bool
+status_flags	server/aesdsocket.h	/^} status_flags;$/;"	t	typeref:struct:__anone61a90670108
+test_validate_my_username	student-test/assignment1/Test_validate_username.c	/^void test_validate_my_username()$/;"	f	typeref:typename:void
+this_function_returns_false	examples/autotest-validate/autotest-validate.c	/^bool this_function_returns_false()$/;"	f	typeref:typename:bool
+this_function_returns_true	examples/autotest-validate/autotest-validate.c	/^bool this_function_returns_true()$/;"	f	typeref:typename:bool
+threadId	server/aesdsocket.h	/^    pthread_t threadId;                     \/**< Thread identifier *\/$/;"	m	struct:__anone61a90670208	typeref:typename:pthread_t
+threadId	server/aesdsocket.h	/^    pthread_t threadId;          \/**< Thread identifier *\/$/;"	m	struct:__anone61a90670308	typeref:typename:pthread_t
+thread_complete_success	examples/threading/threading.h	/^    bool thread_complete_success;$/;"	m	struct:thread_data	typeref:typename:bool
+thread_data	examples/threading/threading.h	/^struct thread_data{$/;"	s
+thread_data	server/aesdsocket.h	/^    ClientThreadData_t thread_data;$/;"	m	struct:node	typeref:typename:ClientThreadData_t
+threadfunc	examples/threading/threading.c	/^void* threadfunc(void* thread_param)$/;"	f	typeref:typename:void *
+timeIntervalSecs	server/aesdsocket.h	/^    int timeIntervalSecs;        \/**< Time interval for timestamps in seconds *\/$/;"	m	struct:__anone61a90670308	typeref:typename:int
+volatile	build/CMakeFiles/3.16.3/CompilerIdC/CMakeCCompilerId.c	/^# define volatile$/;"	d	file:
+wait_to_obtain_ms	examples/threading/threading.h	/^    unsigned int wait_to_obtain_ms;$/;"	m	struct:thread_data	typeref:typename:unsigned int
+wait_to_release_ms	examples/threading/threading.h	/^    unsigned int wait_to_release_ms;$/;"	m	struct:thread_data	typeref:typename:unsigned int
+write_buffer	aesd-char-driver/aesdchar.h	/^    char *write_buffer; \/*Pointer to dynamically allocated buffer for each device*\/$/;"	m	struct:aesd_dev	typeref:typename:char *
+write_buffer_size	aesd-char-driver/aesdchar.h	/^    size_t write_buffer_size; \/* Amount of data currently stored in buffer*\/$/;"	m	struct:aesd_dev	typeref:typename:size_t
+writer	finder-app/Makefile	/^writer: writer.o$/;"	t
+writer.o	finder-app/Makefile	/^writer.o: writer.c$/;"	t

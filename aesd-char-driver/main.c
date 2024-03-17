@@ -9,7 +9,10 @@
  * @date 2019-10-22
  * @copyright Copyright (c) 2019
  *
- * @author Suraj Ajjampur
+// <<<<<<< HEAD
+//  * @author Suraj Ajjampur
+// =======
+// >>>>>>> assignments-base/assignment8
  */
 
 #include <linux/module.h>
@@ -17,17 +20,25 @@
 #include <linux/printk.h>
 #include <linux/types.h>
 #include <linux/cdev.h>
+// <<<<<<< HEAD
 #include <linux/slab.h>
+// =======
+// >>>>>>> assignments-base/assignment8
 #include <linux/fs.h> // file_operations
 #include "aesdchar.h"
 int aesd_major =   0; // use dynamic major
 int aesd_minor =   0;
 
+// <<<<<<< HEAD
 MODULE_AUTHOR("Suraj Ajjampur"); /** TODO: fill in your name **/
+// =======
+// MODULE_AUTHOR("Your Name Here"); /** TODO: fill in your name **/
+// >>>>>>> assignments-base/assignment8
 MODULE_LICENSE("Dual BSD/GPL");
 
 struct aesd_dev aesd_device;
 
+// <<<<<<< HEAD
 /**
  * @brief Sets up the file pointer private data with our aesd_dev device struct
  * 
@@ -37,6 +48,8 @@ struct aesd_dev aesd_device;
  * 
  * @ref https://radek.io/2012/11/10/magical-container_of-macro/
 */
+// =======
+// >>>>>>> assignments-base/assignment8
 int aesd_open(struct inode *inode, struct file *filp)
 {
     PDEBUG("open");
@@ -47,6 +60,7 @@ int aesd_open(struct inode *inode, struct file *filp)
     struct aesd_dev *dev = container_of(inode->i_cdev, struct aesd_dev, cdev);
     filp->private_data = dev;
     PDEBUG("Opened!!");
+
     return 0;
 }
 
@@ -59,6 +73,7 @@ int aesd_release(struct inode *inode, struct file *filp)
     return 0;
 }
 
+<<<<<<< HEAD
 /**
  * @brief This function reads data from a device managed by the aesd character driver. 
  *        The data read is from an entry in the circular buffer associated with the device. 
@@ -259,7 +274,7 @@ ssize_t aesd_write(struct file *filp, const char __user *buf, size_t count, loff
         PDEBUG("New Buffer: %s", char_dev->write_buffer);
 
         struct aesd_buffer_entry *oldest_entry = NULL;
-
+<<<<<<< HEAD
         // If the buffer is full, remove the oldest entry.
         if (char_dev->buffer.full)
         {
@@ -293,6 +308,8 @@ ssize_t aesd_write(struct file *filp, const char __user *buf, size_t count, loff
 /**
  * @brief Setting up the function pointer for operations
 */
+
+
 struct file_operations aesd_fops = {
     .owner =    THIS_MODULE,
     .read =     aesd_read,
@@ -304,6 +321,7 @@ struct file_operations aesd_fops = {
 /**
  * @brief Adds the device into the linux kernel
  */
+
 static int aesd_setup_cdev(struct aesd_dev *dev)
 {
     int err, devno = MKDEV(aesd_major, aesd_minor);
@@ -336,10 +354,14 @@ int aesd_init_module(void)
     /**
      * TODO: initialize the AESD specific portion of the device
      */
+<<<<<<< HEAD
     aesd_circular_buffer_init(&aesd_device.buffer); // Circular Buffer init
     mutex_init(&aesd_device.lock);  // Initialize locking primitive
     aesd_device.write_buffer ==NULL;
     aesd_device.write_buffer_size =0;
+=======
+
+>>>>>>> assignments-base/assignment8
     result = aesd_setup_cdev(&aesd_device);
 
     if( result ) {
@@ -361,6 +383,7 @@ void aesd_cleanup_module(void)
     /**
      * TODO: cleanup AESD specific poritions here as necessary
      */
+
     int8_t index;
     struct aesd_buffer_entry *entry;
     AESD_CIRCULAR_BUFFER_FOREACH(entry,&aesd_device.buffer,index) {
@@ -374,6 +397,9 @@ void aesd_cleanup_module(void)
     PDEBUG("Cleanup is complete as the driver is released");
 }   
 
+
+    unregister_chrdev_region(devno, 1);
+}
 
 module_init(aesd_init_module);
 module_exit(aesd_cleanup_module);

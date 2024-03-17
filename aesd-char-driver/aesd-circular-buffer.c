@@ -50,6 +50,11 @@ struct aesd_buffer_entry *aesd_circular_buffer_find_entry_offset_for_fpos(struct
     }
     
     return NULL; // Return NULL if the specified character offset is not found in the buffer
+
+    // /**
+    // * TODO: implement per description
+    // */
+    // return NULL;
 }
 
 /**
@@ -85,7 +90,16 @@ void aesd_circular_buffer_add_entry(struct aesd_circular_buffer *buffer, const s
     buffer->full = (buffer->in_offs == buffer->out_offs);
 }
 
+// * Any memory referenced in @param add_entry must be allocated by and/or must have a lifetime managed by the caller.
+// */
+// void aesd_circular_buffer_add_entry(struct aesd_circular_buffer *buffer, const struct aesd_buffer_entry *add_entry)
+// {
+//     /**
+//     * TODO: implement per description
+//     */
+// }
 
+// >>>>>>> assignments-base/assignment8
 /**
 * Initializes the circular buffer described by @param buffer to an empty struct
 */
